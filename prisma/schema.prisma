@@ -1,0 +1,28 @@
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id              String    @id @default(cuid())
+  fullName        String
+  phoneNumber     String    @unique
+  email           String?   @unique
+  passwordHash    String
+  role            UserRole  @default(CUSTOMER)
+  phoneVerifiedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
