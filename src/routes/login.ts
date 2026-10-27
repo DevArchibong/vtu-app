@@ -2,6 +2,7 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { prisma } from "../lib/prisma.js";
+import { createAccessToken } from "../lib/tokens.js";
 
 export const loginRouter = Router();
 
@@ -63,8 +64,13 @@ loginRouter.post("/", async (req, res, next) => {
       return;
     }
 
+    const accessToken = createAccessToken(user.id, user.role);
+
     res.status(200).json({
-      message: "Login credentials verified.",
+      message: "Login successful.",
+      accessToken,
+      tokenType: "Bearer",
+      expiresIn: 900,
       user: {
         id: user.id,
         fullName: user.fullName,
@@ -74,6 +80,8 @@ loginRouter.post("/", async (req, res, next) => {
         phoneVerifiedAt: user.phoneVerifiedAt,
       },
     });
+    
+   
   } catch (error) {
     next(error);
   }

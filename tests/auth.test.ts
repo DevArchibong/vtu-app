@@ -1,5 +1,5 @@
 
-import { afterAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import request from "supertest";
 import { app } from "../src/app.ts";
 import { prisma } from "../src/lib/prisma.ts";
@@ -9,10 +9,19 @@ const phoneNumber = `080${suffix}`;
 const normalizedPhone = `+23480${suffix}`;
 
 describe("POST /api/auth/register", () => {
-  afterAll(async () => {
+  beforeAll(async () => {
+    // Remove any stale record using this test phone number.
     await prisma.user.deleteMany({
       where: { phoneNumber: normalizedPhone },
     });
+  });
+
+  afterAll(async () => {
+    // Clean up the test customer after all tests finish.
+    await prisma.user.deleteMany({
+      where: { phoneNumber: normalizedPhone },
+    });
+
     await prisma.$disconnect();
   });
 
