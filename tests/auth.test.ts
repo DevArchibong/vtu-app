@@ -5,8 +5,10 @@ import { app } from "../src/app.ts";
 import { prisma } from "../src/lib/prisma.ts";
 
 const suffix = Date.now().toString().slice(-8);
-const phoneNumber = `080${suffix}`;
-const normalizedPhone = `+23480${suffix}`;
+//const phoneNumber = `080${suffix}`;
+//const normalizedPhone = `+23480${suffix}`;
+const phoneNumber = `070${suffix}`;
+const normalizedPhone = `+23470${suffix}`;
 
 describe("POST /api/auth/register", () => {
   beforeAll(async () => {

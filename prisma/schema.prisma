@@ -16,13 +16,29 @@ enum UserRole {
 }
 
 model User {
-  id              String    @id @default(cuid())
-  fullName        String
-  phoneNumber     String    @unique
-  email           String?   @unique
-  passwordHash    String
-  role            UserRole  @default(CUSTOMER)
-  phoneVerifiedAt DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id                String             @id @default(cuid())
+  fullName          String
+  phoneNumber       String             @unique
+  email             String?            @unique
+  passwordHash      String
+  role              UserRole           @default(CUSTOMER)
+  phoneVerifiedAt   DateTime?
+  phoneVerifications PhoneVerification[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model PhoneVerification {
+  id          String   @id @default(cuid())
+  userId      String
+  codeHash    String
+  expiresAt   DateTime
+  attempts    Int      @default(0)
+  consumedAt  DateTime?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([expiresAt])
 }
