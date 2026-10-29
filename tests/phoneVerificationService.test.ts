@@ -86,8 +86,14 @@ describe("Phone verification service", () => {
 
     expect(record).not.toBeNull();
 
+    // Ensure the test code differs from the stored verification code.
+    const wrongCode =
+      hashVerificationCode("999999") === record!.codeHash
+        ? "999998"
+        : "999999";
+
     await expect(
-      confirmPhoneVerification(userId, "999999"),
+      confirmPhoneVerification(userId, wrongCode),
     ).rejects.toBeInstanceOf(PhoneVerificationError);
 
     const updated = await prisma.phoneVerification.findUnique({
@@ -95,6 +101,53 @@ describe("Phone verification service", () => {
     });
 
     expect(updated!.attempts).toBe(1);
+  });
+
+  it("locks the verification code after five incorrect attempts", async () => {
+    const attemptUser = await prisma.user.create({
+      data: {
+        fullName: "Attempt Limit Test",
+        phoneNumber: `+23491${Date.now().toString().slice(-8)}`,
+        passwordHash: "test-only-password-hash",
+      },
+    });
+
+    try {
+      await createVerificationForUser(attemptUser.id, "123456");
+
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const expectedError =
+          attempt === 4 ? "MAX_ATTEMPTS_EXCEEDED" : "INVALID_CODE";
+
+        await expect(
+          confirmPhoneVerification(attemptUser.id, "999999"),
+        ).rejects.toMatchObject({
+          code: expectedError,
+        });
+      }
+
+      const verification = await prisma.phoneVerification.findFirst({
+        where: { userId: attemptUser.id },
+      });
+
+      expect(verification).not.toBeNull();
+      expect(verification!.attempts).toBe(5);
+      expect(verification!.consumedAt).not.toBeNull();
+
+      await expect(
+        confirmPhoneVerification(attemptUser.id, "999999"),
+      ).rejects.toMatchObject({
+        code: "NO_ACTIVE_CODE",
+      });
+    } finally {
+      await prisma.phoneVerification.deleteMany({
+        where: { userId: attemptUser.id },
+      });
+
+      await prisma.user.delete({
+        where: { id: attemptUser.id },
+      });
+    }
   });
 
   it("accepts the correct code and verifies the phone number", async () => {
@@ -132,6 +185,7 @@ describe("Phone verification service", () => {
       });
 
       expect(verification!.consumedAt).not.toBeNull();
+
       await expect(
         confirmPhoneVerification(secondUser.id, code),
       ).rejects.toMatchObject({
