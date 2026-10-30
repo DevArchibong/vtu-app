@@ -3,28 +3,10 @@ import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { prisma } from "../lib/prisma.js";
 import { createAccessToken } from "../lib/tokens.js";
+import { normalizePhoneNumber } from "../services/phoneNumberService.js";
 
 export const loginRouter = Router();
 
-function normalizePhoneNumber(phone: string): string | null {
-  const cleaned = phone.replace(/[\s()-]/g, "");
-
-  let international: string;
-
-  if (/^0\d{10}$/.test(cleaned)) {
-    international = `+234${cleaned.slice(1)}`;
-  } else if (/^234\d{10}$/.test(cleaned)) {
-    international = `+${cleaned}`;
-  } else if (/^\+234\d{10}$/.test(cleaned)) {
-    international = cleaned;
-  } else {
-    return null;
-  }
-
-  return /^\+234(?:70|71|80|81|90|91)\d{8}$/.test(international)
-    ? international
-    : null;
-}
 
 loginRouter.post("/", async (req, res, next) => {
   try {
