@@ -42,3 +42,63 @@ model PhoneVerification {
   @@index([userId, createdAt])
   @@index([expiresAt])
 }
+enum DataType {
+  SME
+  GIFTING
+  CORPORATE_GIFTING
+}
+
+model Network {
+  id        String        @id @default(cuid())
+  code      String        @unique
+  name      String        @unique
+  isActive  Boolean       @default(true)
+  bundles   DataBundle[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model DataBundle {
+  id             String               @id @default(cuid())
+  networkId      String
+  dataType       DataType
+  name           String
+  dataAmountMb   Int
+  validityDays   Int
+  sellingPriceKobo Int
+  isActive       Boolean              @default(true)
+  network        Network              @relation(fields: [networkId], references: [id], onDelete: Restrict)
+  supplierProducts SupplierProduct[]
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@index([networkId, dataType, isActive])
+  @@unique([networkId, dataType, name])
+}
+
+model Supplier {
+  id        String            @id @default(cuid())
+  code      String            @unique
+  name      String            @unique
+  isActive  Boolean           @default(true)
+  products  SupplierProduct[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+model SupplierProduct {
+  id                String     @id @default(cuid())
+  dataBundleId      String
+  supplierId        String
+  supplierProductId String
+  costPriceKobo     Int
+  isAvailable       Boolean    @default(true)
+  dataBundle        DataBundle @relation(fields: [dataBundleId], references: [id], onDelete: Restrict)
+  supplier          Supplier   @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  @@unique([supplierId, supplierProductId])
+  @@unique([dataBundleId, supplierId])
+  @@index([dataBundleId, isAvailable])
+}

@@ -15,3 +15,12 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const DataType = {
+  SME: 'SME',
+  GIFTING: 'GIFTING',
+  CORPORATE_GIFTING: 'CORPORATE_GIFTING'
+} as const
+
+export type DataType = (typeof DataType)[keyof typeof DataType]

@@ -49,3 +49,23 @@ export type User = Prisma.UserModel
  * 
  */
 export type PhoneVerification = Prisma.PhoneVerificationModel
+/**
+ * Model Network
+ * 
+ */
+export type Network = Prisma.NetworkModel
+/**
+ * Model DataBundle
+ * 
+ */
+export type DataBundle = Prisma.DataBundleModel
+/**
+ * Model Supplier
+ * 
+ */
+export type Supplier = Prisma.SupplierModel
+/**
+ * Model SupplierProduct
+ * 
+ */
+export type SupplierProduct = Prisma.SupplierProductModel

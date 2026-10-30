@@ -12,6 +12,7 @@ import { authRouter } from "./routes/auth.js";
 import { loginRouter } from "./routes/login.js";
 import { profileRouter } from "./routes/profile.js";
 import { phoneVerificationRouter } from "./routes/phoneVerification.js";
+import { dataCatalogueRouter } from "./routes/dataCatalogue.js";
 
 export const app = express();
 
@@ -34,6 +35,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/auth/login", loginRouter);
 app.use("/api/auth/phone-verification", phoneVerificationRouter);
 app.use("/api", profileRouter);
-
+app.use("/api", dataCatalogueRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);

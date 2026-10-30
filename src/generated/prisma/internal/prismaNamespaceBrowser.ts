@@ -52,7 +52,11 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  PhoneVerification: 'PhoneVerification'
+  PhoneVerification: 'PhoneVerification',
+  Network: 'Network',
+  DataBundle: 'DataBundle',
+  Supplier: 'Supplier',
+  SupplierProduct: 'SupplierProduct'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -97,6 +101,60 @@ export const PhoneVerificationScalarFieldEnum = {
 } as const
 
 export type PhoneVerificationScalarFieldEnum = (typeof PhoneVerificationScalarFieldEnum)[keyof typeof PhoneVerificationScalarFieldEnum]
+
+
+export const NetworkScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NetworkScalarFieldEnum = (typeof NetworkScalarFieldEnum)[keyof typeof NetworkScalarFieldEnum]
+
+
+export const DataBundleScalarFieldEnum = {
+  id: 'id',
+  networkId: 'networkId',
+  dataType: 'dataType',
+  name: 'name',
+  dataAmountMb: 'dataAmountMb',
+  validityDays: 'validityDays',
+  sellingPriceKobo: 'sellingPriceKobo',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DataBundleScalarFieldEnum = (typeof DataBundleScalarFieldEnum)[keyof typeof DataBundleScalarFieldEnum]
+
+
+export const SupplierScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SupplierScalarFieldEnum = (typeof SupplierScalarFieldEnum)[keyof typeof SupplierScalarFieldEnum]
+
+
+export const SupplierProductScalarFieldEnum = {
+  id: 'id',
+  dataBundleId: 'dataBundleId',
+  supplierId: 'supplierId',
+  supplierProductId: 'supplierProductId',
+  costPriceKobo: 'costPriceKobo',
+  isAvailable: 'isAvailable',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SupplierProductScalarFieldEnum = (typeof SupplierProductScalarFieldEnum)[keyof typeof SupplierProductScalarFieldEnum]
 
 
 export const SortOrder = {
