@@ -56,7 +56,12 @@ export const ModelName = {
   Network: 'Network',
   DataBundle: 'DataBundle',
   Supplier: 'Supplier',
-  SupplierProduct: 'SupplierProduct'
+  SupplierProduct: 'SupplierProduct',
+  Wallet: 'Wallet',
+  VirtualAccount: 'VirtualAccount',
+  WalletFunding: 'WalletFunding',
+  WalletTransaction: 'WalletTransaction',
+  IdentityVerification: 'IdentityVerification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -155,6 +160,84 @@ export const SupplierProductScalarFieldEnum = {
 } as const
 
 export type SupplierProductScalarFieldEnum = (typeof SupplierProductScalarFieldEnum)[keyof typeof SupplierProductScalarFieldEnum]
+
+
+export const WalletScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  balanceKobo: 'balanceKobo',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof WalletScalarFieldEnum]
+
+
+export const VirtualAccountScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  providerCode: 'providerCode',
+  providerAccountId: 'providerAccountId',
+  accountNumber: 'accountNumber',
+  bankName: 'bankName',
+  accountName: 'accountName',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VirtualAccountScalarFieldEnum = (typeof VirtualAccountScalarFieldEnum)[keyof typeof VirtualAccountScalarFieldEnum]
+
+
+export const WalletFundingScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  virtualAccountId: 'virtualAccountId',
+  providerCode: 'providerCode',
+  providerReference: 'providerReference',
+  providerTransactionId: 'providerTransactionId',
+  expectedAmountKobo: 'expectedAmountKobo',
+  receivedAmountKobo: 'receivedAmountKobo',
+  currency: 'currency',
+  status: 'status',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WalletFundingScalarFieldEnum = (typeof WalletFundingScalarFieldEnum)[keyof typeof WalletFundingScalarFieldEnum]
+
+
+export const WalletTransactionScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  fundingId: 'fundingId',
+  reference: 'reference',
+  type: 'type',
+  amountKobo: 'amountKobo',
+  balanceBeforeKobo: 'balanceBeforeKobo',
+  balanceAfterKobo: 'balanceAfterKobo',
+  description: 'description',
+  createdAt: 'createdAt'
+} as const
+
+export type WalletTransactionScalarFieldEnum = (typeof WalletTransactionScalarFieldEnum)[keyof typeof WalletTransactionScalarFieldEnum]
+
+
+export const IdentityVerificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  identityType: 'identityType',
+  status: 'status',
+  providerCode: 'providerCode',
+  providerReference: 'providerReference',
+  verifiedAt: 'verifiedAt',
+  failureCode: 'failureCode',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IdentityVerificationScalarFieldEnum = (typeof IdentityVerificationScalarFieldEnum)[keyof typeof IdentityVerificationScalarFieldEnum]
 
 
 export const SortOrder = {

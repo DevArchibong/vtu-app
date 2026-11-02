@@ -1,28 +1,39 @@
-
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import request from "supertest";
 import { app } from "../src/app.ts";
 import { prisma } from "../src/lib/prisma.ts";
 
 const suffix = Date.now().toString().slice(-8);
-//const phoneNumber = `080${suffix}`;
-//const normalizedPhone = `+23480${suffix}`;
 const phoneNumber = `070${suffix}`;
 const normalizedPhone = `+23470${suffix}`;
 
+// Remove the wallet before deleting its associated test customer.
+async function cleanupTestCustomer() {
+  const user = await prisma.user.findUnique({
+    where: { phoneNumber: normalizedPhone },
+    select: { id: true },
+  });
+
+  if (user) {
+    await prisma.wallet.deleteMany({
+      where: { userId: user.id },
+    });
+
+    await prisma.user.deleteMany({
+      where: { id: user.id },
+    });
+  }
+}
+
 describe("POST /api/auth/register", () => {
   beforeAll(async () => {
-    // Remove any stale record using this test phone number.
-    await prisma.user.deleteMany({
-      where: { phoneNumber: normalizedPhone },
-    });
+    // Remove any stale test customer before starting.
+    await cleanupTestCustomer();
   });
 
   afterAll(async () => {
-    // Clean up the test customer after all tests finish.
-    await prisma.user.deleteMany({
-      where: { phoneNumber: normalizedPhone },
-    });
+    // Clean up the test customer and its wallet.
+    await cleanupTestCustomer();
 
     await prisma.$disconnect();
   });
@@ -42,6 +53,14 @@ describe("POST /api/auth/register", () => {
     expect(response.body.user.email).toBeNull();
     expect(response.body.user.phoneVerifiedAt).toBeNull();
     expect(response.body.user).not.toHaveProperty("passwordHash");
+
+    // Confirm that registration automatically creates a zero-balance wallet.
+    const wallet = await prisma.wallet.findUnique({
+      where: { userId: response.body.user.id },
+    });
+
+    expect(wallet).not.toBeNull();
+    expect(wallet?.balanceKobo).toBe(0);
   });
 
   it("rejects a duplicate phone number", async () => {

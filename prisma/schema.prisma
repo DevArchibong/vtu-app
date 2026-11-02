@@ -21,9 +21,11 @@ model User {
   phoneNumber       String             @unique
   email             String?            @unique
   passwordHash      String
+   wallet            Wallet?
   role              UserRole           @default(CUSTOMER)
   phoneVerifiedAt   DateTime?
   phoneVerifications PhoneVerification[]
+  identityVerifications IdentityVerification[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
 }
@@ -46,6 +48,34 @@ enum DataType {
   SME
   GIFTING
   CORPORATE_GIFTING
+}
+enum WalletTransactionType {
+  CREDIT
+  DEBIT
+}
+
+enum WalletFundingStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+  REVIEW_REQUIRED
+}
+
+enum IdentityType {
+  NIN
+  BVN
+}
+
+enum IdentityVerificationStatus {
+  PENDING
+  VERIFIED
+  FAILED
+  REVIEW_REQUIRED
+}
+
+enum VirtualAccountStatus {
+  ACTIVE
+  INACTIVE
 }
 
 model Network {
@@ -101,4 +131,102 @@ model SupplierProduct {
   @@unique([supplierId, supplierProductId])
   @@unique([dataBundleId, supplierId])
   @@index([dataBundleId, isAvailable])
+}
+
+model Wallet {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  balanceKobo Int      @default(0)
+
+  user             User                @relation(fields: [userId], references: [id], onDelete: Restrict)
+  virtualAccounts  VirtualAccount[]
+  fundings         WalletFunding[]
+  transactions     WalletTransaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VirtualAccount {
+  id                String               @id @default(cuid())
+  walletId          String
+  providerCode      String
+  providerAccountId String
+  accountNumber     String
+  bankName          String
+  accountName       String
+  status            VirtualAccountStatus @default(ACTIVE)
+
+  wallet   Wallet          @relation(fields: [walletId], references: [id], onDelete: Restrict)
+  fundings WalletFunding[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([providerCode, providerAccountId])
+  @@unique([providerCode, accountNumber])
+  @@index([walletId, status])
+}
+
+model WalletFunding {
+  id                    String              @id @default(cuid())
+  walletId              String
+  virtualAccountId      String
+  providerCode          String
+  providerReference     String              @unique
+  providerTransactionId String?
+  expectedAmountKobo    Int?
+  receivedAmountKobo    Int?
+  currency              String              @default("NGN")
+  status                WalletFundingStatus @default(PENDING)
+  confirmedAt           DateTime?
+
+  wallet           Wallet             @relation(fields: [walletId], references: [id], onDelete: Restrict)
+  virtualAccount   VirtualAccount     @relation(fields: [virtualAccountId], references: [id], onDelete: Restrict)
+  walletTransaction WalletTransaction?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([providerCode, providerTransactionId])
+  @@index([walletId, status])
+  @@index([createdAt])
+}
+
+model WalletTransaction {
+  id                  String                @id @default(cuid())
+  walletId            String
+  fundingId           String?               @unique
+  reference           String                @unique
+  type                WalletTransactionType
+  amountKobo          Int
+  balanceBeforeKobo   Int
+  balanceAfterKobo    Int
+  description         String
+
+  wallet  Wallet         @relation(fields: [walletId], references: [id], onDelete: Restrict)
+  funding WalletFunding? @relation(fields: [fundingId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+
+  @@index([walletId, createdAt])
+}
+model IdentityVerification {
+  id                String                     @id @default(cuid())
+  userId            String
+  identityType      IdentityType
+  status            IdentityVerificationStatus @default(PENDING)
+
+  providerCode      String
+  providerReference String?                    @unique
+
+  verifiedAt        DateTime?
+  failureCode       String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
+  @@index([userId, identityType])
 }

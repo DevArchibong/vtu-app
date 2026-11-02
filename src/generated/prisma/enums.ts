@@ -24,3 +24,47 @@ export const DataType = {
 } as const
 
 export type DataType = (typeof DataType)[keyof typeof DataType]
+
+
+export const WalletTransactionType = {
+  CREDIT: 'CREDIT',
+  DEBIT: 'DEBIT'
+} as const
+
+export type WalletTransactionType = (typeof WalletTransactionType)[keyof typeof WalletTransactionType]
+
+
+export const WalletFundingStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  FAILED: 'FAILED',
+  REVIEW_REQUIRED: 'REVIEW_REQUIRED'
+} as const
+
+export type WalletFundingStatus = (typeof WalletFundingStatus)[keyof typeof WalletFundingStatus]
+
+
+export const IdentityType = {
+  NIN: 'NIN',
+  BVN: 'BVN'
+} as const
+
+export type IdentityType = (typeof IdentityType)[keyof typeof IdentityType]
+
+
+export const IdentityVerificationStatus = {
+  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
+  FAILED: 'FAILED',
+  REVIEW_REQUIRED: 'REVIEW_REQUIRED'
+} as const
+
+export type IdentityVerificationStatus = (typeof IdentityVerificationStatus)[keyof typeof IdentityVerificationStatus]
+
+
+export const VirtualAccountStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type VirtualAccountStatus = (typeof VirtualAccountStatus)[keyof typeof VirtualAccountStatus]

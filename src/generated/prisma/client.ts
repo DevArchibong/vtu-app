@@ -69,3 +69,28 @@ export type Supplier = Prisma.SupplierModel
  * 
  */
 export type SupplierProduct = Prisma.SupplierProductModel
+/**
+ * Model Wallet
+ * 
+ */
+export type Wallet = Prisma.WalletModel
+/**
+ * Model VirtualAccount
+ * 
+ */
+export type VirtualAccount = Prisma.VirtualAccountModel
+/**
+ * Model WalletFunding
+ * 
+ */
+export type WalletFunding = Prisma.WalletFundingModel
+/**
+ * Model WalletTransaction
+ * 
+ */
+export type WalletTransaction = Prisma.WalletTransactionModel
+/**
+ * Model IdentityVerification
+ * 
+ */
+export type IdentityVerification = Prisma.IdentityVerificationModel

@@ -13,6 +13,7 @@ import { loginRouter } from "./routes/login.js";
 import { profileRouter } from "./routes/profile.js";
 import { phoneVerificationRouter } from "./routes/phoneVerification.js";
 import { dataCatalogueRouter } from "./routes/dataCatalogue.js";
+import { walletRouter } from "./routes/wallet.js";
 
 export const app = express();
 
@@ -36,5 +37,6 @@ app.use("/api/auth/login", loginRouter);
 app.use("/api/auth/phone-verification", phoneVerificationRouter);
 app.use("/api", profileRouter);
 app.use("/api", dataCatalogueRouter);
+app.use("/api", walletRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);

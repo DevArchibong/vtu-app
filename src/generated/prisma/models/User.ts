@@ -214,7 +214,9 @@ export type UserWhereInput = {
   phoneVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
   phoneVerifications?: Prisma.PhoneVerificationListRelationFilter
+  identityVerifications?: Prisma.IdentityVerificationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -227,7 +229,9 @@ export type UserOrderByWithRelationInput = {
   phoneVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  wallet?: Prisma.WalletOrderByWithRelationInput
   phoneVerifications?: Prisma.PhoneVerificationOrderByRelationAggregateInput
+  identityVerifications?: Prisma.IdentityVerificationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -243,7 +247,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   phoneVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
   phoneVerifications?: Prisma.PhoneVerificationListRelationFilter
+  identityVerifications?: Prisma.IdentityVerificationListRelationFilter
 }, "id" | "phoneNumber" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -286,7 +292,9 @@ export type UserCreateInput = {
   phoneVerifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  identityVerifications?: Prisma.IdentityVerificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -299,7 +307,9 @@ export type UserUncheckedCreateInput = {
   phoneVerifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
   phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -312,7 +322,9 @@ export type UserUpdateInput = {
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -325,7 +337,9 @@ export type UserUncheckedUpdateInput = {
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
   phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -439,6 +453,34 @@ export type UserUpdateOneRequiredWithoutPhoneVerificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPhoneVerificationsInput, Prisma.UserUpdateWithoutPhoneVerificationsInput>, Prisma.UserUncheckedUpdateWithoutPhoneVerificationsInput>
 }
 
+export type UserCreateNestedOneWithoutWalletInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWalletInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWalletNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWalletInput
+  upsert?: Prisma.UserUpsertWithoutWalletInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWalletInput, Prisma.UserUpdateWithoutWalletInput>, Prisma.UserUncheckedUpdateWithoutWalletInput>
+}
+
+export type UserCreateNestedOneWithoutIdentityVerificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutIdentityVerificationsInput, Prisma.UserUncheckedCreateWithoutIdentityVerificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutIdentityVerificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutIdentityVerificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutIdentityVerificationsInput, Prisma.UserUncheckedCreateWithoutIdentityVerificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutIdentityVerificationsInput
+  upsert?: Prisma.UserUpsertWithoutIdentityVerificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutIdentityVerificationsInput, Prisma.UserUpdateWithoutIdentityVerificationsInput>, Prisma.UserUncheckedUpdateWithoutIdentityVerificationsInput>
+}
+
 export type UserCreateWithoutPhoneVerificationsInput = {
   id?: string
   fullName: string
@@ -449,6 +491,8 @@ export type UserCreateWithoutPhoneVerificationsInput = {
   phoneVerifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  identityVerifications?: Prisma.IdentityVerificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPhoneVerificationsInput = {
@@ -461,6 +505,8 @@ export type UserUncheckedCreateWithoutPhoneVerificationsInput = {
   phoneVerifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPhoneVerificationsInput = {
@@ -489,6 +535,8 @@ export type UserUpdateWithoutPhoneVerificationsInput = {
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPhoneVerificationsInput = {
@@ -501,6 +549,152 @@ export type UserUncheckedUpdateWithoutPhoneVerificationsInput = {
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWalletInput = {
+  id?: string
+  fullName: string
+  phoneNumber: string
+  email?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  identityVerifications?: Prisma.IdentityVerificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutWalletInput = {
+  id?: string
+  fullName: string
+  phoneNumber: string
+  email?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWalletInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+}
+
+export type UserUpsertWithoutWalletInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWalletInput, Prisma.UserUncheckedUpdateWithoutWalletInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWalletInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWalletInput, Prisma.UserUncheckedUpdateWithoutWalletInput>
+}
+
+export type UserUpdateWithoutWalletInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWalletInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutIdentityVerificationsInput = {
+  id?: string
+  fullName: string
+  phoneNumber: string
+  email?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutIdentityVerificationsInput = {
+  id?: string
+  fullName: string
+  phoneNumber: string
+  email?: string | null
+  passwordHash: string
+  role?: $Enums.UserRole
+  phoneVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutIdentityVerificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutIdentityVerificationsInput, Prisma.UserUncheckedCreateWithoutIdentityVerificationsInput>
+}
+
+export type UserUpsertWithoutIdentityVerificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutIdentityVerificationsInput, Prisma.UserUncheckedUpdateWithoutIdentityVerificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutIdentityVerificationsInput, Prisma.UserUncheckedCreateWithoutIdentityVerificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutIdentityVerificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutIdentityVerificationsInput, Prisma.UserUncheckedUpdateWithoutIdentityVerificationsInput>
+}
+
+export type UserUpdateWithoutIdentityVerificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutIdentityVerificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -510,10 +704,12 @@ export type UserUncheckedUpdateWithoutPhoneVerificationsInput = {
 
 export type UserCountOutputType = {
   phoneVerifications: number
+  identityVerifications: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   phoneVerifications?: boolean | UserCountOutputTypeCountPhoneVerificationsArgs
+  identityVerifications?: boolean | UserCountOutputTypeCountIdentityVerificationsArgs
 }
 
 /**
@@ -533,6 +729,13 @@ export type UserCountOutputTypeCountPhoneVerificationsArgs<ExtArgs extends runti
   where?: Prisma.PhoneVerificationWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountIdentityVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IdentityVerificationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -544,7 +747,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   phoneVerifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   phoneVerifications?: boolean | Prisma.User$phoneVerificationsArgs<ExtArgs>
+  identityVerifications?: boolean | Prisma.User$identityVerificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -586,7 +791,9 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "phoneNumber" | "email" | "passwordHash" | "role" | "phoneVerifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   phoneVerifications?: boolean | Prisma.User$phoneVerificationsArgs<ExtArgs>
+  identityVerifications?: boolean | Prisma.User$identityVerificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -595,7 +802,9 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    wallet: Prisma.$WalletPayload<ExtArgs> | null
     phoneVerifications: Prisma.$PhoneVerificationPayload<ExtArgs>[]
+    identityVerifications: Prisma.$IdentityVerificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1001,7 +1210,9 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  wallet<T extends Prisma.User$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$walletArgs<ExtArgs>>): Prisma.Prisma__WalletClient<runtime.Types.Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   phoneVerifications<T extends Prisma.User$phoneVerificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$phoneVerificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PhoneVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  identityVerifications<T extends Prisma.User$identityVerificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$identityVerificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdentityVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1433,6 +1644,25 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User.wallet
+ */
+export type User$walletArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Wallet
+   */
+  select?: Prisma.WalletSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Wallet
+   */
+  omit?: Prisma.WalletOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WalletInclude<ExtArgs> | null
+  where?: Prisma.WalletWhereInput
+}
+
+/**
  * User.phoneVerifications
  */
 export type User$phoneVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1454,6 +1684,30 @@ export type User$phoneVerificationsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.PhoneVerificationScalarFieldEnum | Prisma.PhoneVerificationScalarFieldEnum[]
+}
+
+/**
+ * User.identityVerifications
+ */
+export type User$identityVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IdentityVerification
+   */
+  select?: Prisma.IdentityVerificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IdentityVerification
+   */
+  omit?: Prisma.IdentityVerificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IdentityVerificationInclude<ExtArgs> | null
+  where?: Prisma.IdentityVerificationWhereInput
+  orderBy?: Prisma.IdentityVerificationOrderByWithRelationInput | Prisma.IdentityVerificationOrderByWithRelationInput[]
+  cursor?: Prisma.IdentityVerificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IdentityVerificationScalarFieldEnum | Prisma.IdentityVerificationScalarFieldEnum[]
 }
 
 /**

@@ -77,6 +77,10 @@ authRouter.post("/register", async (req, res, next) => {
           phoneNumber: normalizedPhone,
           email: normalizedEmail,
           passwordHash,
+        
+          wallet: {
+            create: {},
+          },
         },
         select: {
           id: true,

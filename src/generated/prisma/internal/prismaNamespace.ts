@@ -402,7 +402,12 @@ export const ModelName = {
   Network: 'Network',
   DataBundle: 'DataBundle',
   Supplier: 'Supplier',
-  SupplierProduct: 'SupplierProduct'
+  SupplierProduct: 'SupplierProduct',
+  Wallet: 'Wallet',
+  VirtualAccount: 'VirtualAccount',
+  WalletFunding: 'WalletFunding',
+  WalletTransaction: 'WalletTransaction',
+  IdentityVerification: 'IdentityVerification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "phoneVerification" | "network" | "dataBundle" | "supplier" | "supplierProduct"
+    modelProps: "user" | "phoneVerification" | "network" | "dataBundle" | "supplier" | "supplierProduct" | "wallet" | "virtualAccount" | "walletFunding" | "walletTransaction" | "identityVerification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -866,6 +871,376 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Wallet: {
+      payload: Prisma.$WalletPayload<ExtArgs>
+      fields: Prisma.WalletFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WalletFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WalletFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>
+        }
+        findFirst: {
+          args: Prisma.WalletFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WalletFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>
+        }
+        findMany: {
+          args: Prisma.WalletFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>[]
+        }
+        create: {
+          args: Prisma.WalletCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>
+        }
+        createMany: {
+          args: Prisma.WalletCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WalletCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>[]
+        }
+        delete: {
+          args: Prisma.WalletDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>
+        }
+        update: {
+          args: Prisma.WalletUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>
+        }
+        deleteMany: {
+          args: Prisma.WalletDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WalletUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WalletUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>[]
+        }
+        upsert: {
+          args: Prisma.WalletUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>
+        }
+        aggregate: {
+          args: Prisma.WalletAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWallet>
+        }
+        groupBy: {
+          args: Prisma.WalletGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WalletGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WalletCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WalletCountAggregateOutputType> | number
+        }
+      }
+    }
+    VirtualAccount: {
+      payload: Prisma.$VirtualAccountPayload<ExtArgs>
+      fields: Prisma.VirtualAccountFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VirtualAccountFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VirtualAccountFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload>
+        }
+        findFirst: {
+          args: Prisma.VirtualAccountFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VirtualAccountFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload>
+        }
+        findMany: {
+          args: Prisma.VirtualAccountFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload>[]
+        }
+        create: {
+          args: Prisma.VirtualAccountCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload>
+        }
+        createMany: {
+          args: Prisma.VirtualAccountCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VirtualAccountCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload>[]
+        }
+        delete: {
+          args: Prisma.VirtualAccountDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload>
+        }
+        update: {
+          args: Prisma.VirtualAccountUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload>
+        }
+        deleteMany: {
+          args: Prisma.VirtualAccountDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VirtualAccountUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VirtualAccountUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload>[]
+        }
+        upsert: {
+          args: Prisma.VirtualAccountUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VirtualAccountPayload>
+        }
+        aggregate: {
+          args: Prisma.VirtualAccountAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVirtualAccount>
+        }
+        groupBy: {
+          args: Prisma.VirtualAccountGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VirtualAccountGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VirtualAccountCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VirtualAccountCountAggregateOutputType> | number
+        }
+      }
+    }
+    WalletFunding: {
+      payload: Prisma.$WalletFundingPayload<ExtArgs>
+      fields: Prisma.WalletFundingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WalletFundingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WalletFundingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload>
+        }
+        findFirst: {
+          args: Prisma.WalletFundingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WalletFundingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload>
+        }
+        findMany: {
+          args: Prisma.WalletFundingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload>[]
+        }
+        create: {
+          args: Prisma.WalletFundingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload>
+        }
+        createMany: {
+          args: Prisma.WalletFundingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WalletFundingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload>[]
+        }
+        delete: {
+          args: Prisma.WalletFundingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload>
+        }
+        update: {
+          args: Prisma.WalletFundingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload>
+        }
+        deleteMany: {
+          args: Prisma.WalletFundingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WalletFundingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WalletFundingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload>[]
+        }
+        upsert: {
+          args: Prisma.WalletFundingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletFundingPayload>
+        }
+        aggregate: {
+          args: Prisma.WalletFundingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWalletFunding>
+        }
+        groupBy: {
+          args: Prisma.WalletFundingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WalletFundingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WalletFundingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WalletFundingCountAggregateOutputType> | number
+        }
+      }
+    }
+    WalletTransaction: {
+      payload: Prisma.$WalletTransactionPayload<ExtArgs>
+      fields: Prisma.WalletTransactionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WalletTransactionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WalletTransactionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        findFirst: {
+          args: Prisma.WalletTransactionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WalletTransactionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        findMany: {
+          args: Prisma.WalletTransactionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>[]
+        }
+        create: {
+          args: Prisma.WalletTransactionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        createMany: {
+          args: Prisma.WalletTransactionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WalletTransactionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>[]
+        }
+        delete: {
+          args: Prisma.WalletTransactionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        update: {
+          args: Prisma.WalletTransactionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        deleteMany: {
+          args: Prisma.WalletTransactionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WalletTransactionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WalletTransactionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>[]
+        }
+        upsert: {
+          args: Prisma.WalletTransactionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        aggregate: {
+          args: Prisma.WalletTransactionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWalletTransaction>
+        }
+        groupBy: {
+          args: Prisma.WalletTransactionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WalletTransactionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WalletTransactionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WalletTransactionCountAggregateOutputType> | number
+        }
+      }
+    }
+    IdentityVerification: {
+      payload: Prisma.$IdentityVerificationPayload<ExtArgs>
+      fields: Prisma.IdentityVerificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IdentityVerificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IdentityVerificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload>
+        }
+        findFirst: {
+          args: Prisma.IdentityVerificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IdentityVerificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload>
+        }
+        findMany: {
+          args: Prisma.IdentityVerificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload>[]
+        }
+        create: {
+          args: Prisma.IdentityVerificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload>
+        }
+        createMany: {
+          args: Prisma.IdentityVerificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IdentityVerificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload>[]
+        }
+        delete: {
+          args: Prisma.IdentityVerificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload>
+        }
+        update: {
+          args: Prisma.IdentityVerificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.IdentityVerificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IdentityVerificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IdentityVerificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.IdentityVerificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationPayload>
+        }
+        aggregate: {
+          args: Prisma.IdentityVerificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIdentityVerification>
+        }
+        groupBy: {
+          args: Prisma.IdentityVerificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityVerificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IdentityVerificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityVerificationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -987,6 +1362,84 @@ export const SupplierProductScalarFieldEnum = {
 export type SupplierProductScalarFieldEnum = (typeof SupplierProductScalarFieldEnum)[keyof typeof SupplierProductScalarFieldEnum]
 
 
+export const WalletScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  balanceKobo: 'balanceKobo',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof WalletScalarFieldEnum]
+
+
+export const VirtualAccountScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  providerCode: 'providerCode',
+  providerAccountId: 'providerAccountId',
+  accountNumber: 'accountNumber',
+  bankName: 'bankName',
+  accountName: 'accountName',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VirtualAccountScalarFieldEnum = (typeof VirtualAccountScalarFieldEnum)[keyof typeof VirtualAccountScalarFieldEnum]
+
+
+export const WalletFundingScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  virtualAccountId: 'virtualAccountId',
+  providerCode: 'providerCode',
+  providerReference: 'providerReference',
+  providerTransactionId: 'providerTransactionId',
+  expectedAmountKobo: 'expectedAmountKobo',
+  receivedAmountKobo: 'receivedAmountKobo',
+  currency: 'currency',
+  status: 'status',
+  confirmedAt: 'confirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WalletFundingScalarFieldEnum = (typeof WalletFundingScalarFieldEnum)[keyof typeof WalletFundingScalarFieldEnum]
+
+
+export const WalletTransactionScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  fundingId: 'fundingId',
+  reference: 'reference',
+  type: 'type',
+  amountKobo: 'amountKobo',
+  balanceBeforeKobo: 'balanceBeforeKobo',
+  balanceAfterKobo: 'balanceAfterKobo',
+  description: 'description',
+  createdAt: 'createdAt'
+} as const
+
+export type WalletTransactionScalarFieldEnum = (typeof WalletTransactionScalarFieldEnum)[keyof typeof WalletTransactionScalarFieldEnum]
+
+
+export const IdentityVerificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  identityType: 'identityType',
+  status: 'status',
+  providerCode: 'providerCode',
+  providerReference: 'providerReference',
+  verifiedAt: 'verifiedAt',
+  failureCode: 'failureCode',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IdentityVerificationScalarFieldEnum = (typeof IdentityVerificationScalarFieldEnum)[keyof typeof IdentityVerificationScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1091,6 +1544,76 @@ export type EnumDataTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
  * Reference to a field of type 'DataType[]'
  */
 export type ListEnumDataTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DataType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VirtualAccountStatus'
+ */
+export type EnumVirtualAccountStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VirtualAccountStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'VirtualAccountStatus[]'
+ */
+export type ListEnumVirtualAccountStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VirtualAccountStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WalletFundingStatus'
+ */
+export type EnumWalletFundingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WalletFundingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'WalletFundingStatus[]'
+ */
+export type ListEnumWalletFundingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WalletFundingStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WalletTransactionType'
+ */
+export type EnumWalletTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WalletTransactionType'>
+    
+
+
+/**
+ * Reference to a field of type 'WalletTransactionType[]'
+ */
+export type ListEnumWalletTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WalletTransactionType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityType'
+ */
+export type EnumIdentityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityType'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityType[]'
+ */
+export type ListEnumIdentityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityVerificationStatus'
+ */
+export type EnumIdentityVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityVerificationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityVerificationStatus[]'
+ */
+export type ListEnumIdentityVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityVerificationStatus[]'>
     
 
 
@@ -1264,6 +1787,11 @@ export type GlobalOmitConfig = {
   dataBundle?: Prisma.DataBundleOmit
   supplier?: Prisma.SupplierOmit
   supplierProduct?: Prisma.SupplierProductOmit
+  wallet?: Prisma.WalletOmit
+  virtualAccount?: Prisma.VirtualAccountOmit
+  walletFunding?: Prisma.WalletFundingOmit
+  walletTransaction?: Prisma.WalletTransactionOmit
+  identityVerification?: Prisma.IdentityVerificationOmit
 }
 
 /* Types for Logging */
