@@ -177,6 +177,7 @@ export const VirtualAccountScalarFieldEnum = {
   id: 'id',
   walletId: 'walletId',
   providerCode: 'providerCode',
+  idempotencyKey: 'idempotencyKey',
   providerAccountId: 'providerAccountId',
   accountNumber: 'accountNumber',
   bankName: 'bankName',

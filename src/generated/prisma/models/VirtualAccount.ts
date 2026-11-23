@@ -28,6 +28,7 @@ export type VirtualAccountMinAggregateOutputType = {
   id: string | null
   walletId: string | null
   providerCode: string | null
+  idempotencyKey: string | null
   providerAccountId: string | null
   accountNumber: string | null
   bankName: string | null
@@ -41,6 +42,7 @@ export type VirtualAccountMaxAggregateOutputType = {
   id: string | null
   walletId: string | null
   providerCode: string | null
+  idempotencyKey: string | null
   providerAccountId: string | null
   accountNumber: string | null
   bankName: string | null
@@ -54,6 +56,7 @@ export type VirtualAccountCountAggregateOutputType = {
   id: number
   walletId: number
   providerCode: number
+  idempotencyKey: number
   providerAccountId: number
   accountNumber: number
   bankName: number
@@ -69,6 +72,7 @@ export type VirtualAccountMinAggregateInputType = {
   id?: true
   walletId?: true
   providerCode?: true
+  idempotencyKey?: true
   providerAccountId?: true
   accountNumber?: true
   bankName?: true
@@ -82,6 +86,7 @@ export type VirtualAccountMaxAggregateInputType = {
   id?: true
   walletId?: true
   providerCode?: true
+  idempotencyKey?: true
   providerAccountId?: true
   accountNumber?: true
   bankName?: true
@@ -95,6 +100,7 @@ export type VirtualAccountCountAggregateInputType = {
   id?: true
   walletId?: true
   providerCode?: true
+  idempotencyKey?: true
   providerAccountId?: true
   accountNumber?: true
   bankName?: true
@@ -181,10 +187,11 @@ export type VirtualAccountGroupByOutputType = {
   id: string
   walletId: string
   providerCode: string
-  providerAccountId: string
-  accountNumber: string
-  bankName: string
-  accountName: string
+  idempotencyKey: string
+  providerAccountId: string | null
+  accountNumber: string | null
+  bankName: string | null
+  accountName: string | null
   status: $Enums.VirtualAccountStatus
   createdAt: Date
   updatedAt: Date
@@ -215,10 +222,11 @@ export type VirtualAccountWhereInput = {
   id?: Prisma.StringFilter<"VirtualAccount"> | string
   walletId?: Prisma.StringFilter<"VirtualAccount"> | string
   providerCode?: Prisma.StringFilter<"VirtualAccount"> | string
-  providerAccountId?: Prisma.StringFilter<"VirtualAccount"> | string
-  accountNumber?: Prisma.StringFilter<"VirtualAccount"> | string
-  bankName?: Prisma.StringFilter<"VirtualAccount"> | string
-  accountName?: Prisma.StringFilter<"VirtualAccount"> | string
+  idempotencyKey?: Prisma.StringFilter<"VirtualAccount"> | string
+  providerAccountId?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
+  accountNumber?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
+  bankName?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
+  accountName?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
   status?: Prisma.EnumVirtualAccountStatusFilter<"VirtualAccount"> | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFilter<"VirtualAccount"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VirtualAccount"> | Date | string
@@ -230,10 +238,11 @@ export type VirtualAccountOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
-  providerAccountId?: Prisma.SortOrder
-  accountNumber?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountName?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
+  providerAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankName?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountName?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -243,6 +252,7 @@ export type VirtualAccountOrderByWithRelationInput = {
 
 export type VirtualAccountWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  idempotencyKey?: string
   providerCode_providerAccountId?: Prisma.VirtualAccountProviderCodeProviderAccountIdCompoundUniqueInput
   providerCode_accountNumber?: Prisma.VirtualAccountProviderCodeAccountNumberCompoundUniqueInput
   AND?: Prisma.VirtualAccountWhereInput | Prisma.VirtualAccountWhereInput[]
@@ -250,25 +260,26 @@ export type VirtualAccountWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.VirtualAccountWhereInput | Prisma.VirtualAccountWhereInput[]
   walletId?: Prisma.StringFilter<"VirtualAccount"> | string
   providerCode?: Prisma.StringFilter<"VirtualAccount"> | string
-  providerAccountId?: Prisma.StringFilter<"VirtualAccount"> | string
-  accountNumber?: Prisma.StringFilter<"VirtualAccount"> | string
-  bankName?: Prisma.StringFilter<"VirtualAccount"> | string
-  accountName?: Prisma.StringFilter<"VirtualAccount"> | string
+  providerAccountId?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
+  accountNumber?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
+  bankName?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
+  accountName?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
   status?: Prisma.EnumVirtualAccountStatusFilter<"VirtualAccount"> | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFilter<"VirtualAccount"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VirtualAccount"> | Date | string
   wallet?: Prisma.XOR<Prisma.WalletScalarRelationFilter, Prisma.WalletWhereInput>
   fundings?: Prisma.WalletFundingListRelationFilter
-}, "id" | "providerCode_providerAccountId" | "providerCode_accountNumber">
+}, "id" | "idempotencyKey" | "providerCode_providerAccountId" | "providerCode_accountNumber">
 
 export type VirtualAccountOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
-  providerAccountId?: Prisma.SortOrder
-  accountNumber?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountName?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
+  providerAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankName?: Prisma.SortOrderInput | Prisma.SortOrder
+  accountName?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -284,10 +295,11 @@ export type VirtualAccountScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"VirtualAccount"> | string
   walletId?: Prisma.StringWithAggregatesFilter<"VirtualAccount"> | string
   providerCode?: Prisma.StringWithAggregatesFilter<"VirtualAccount"> | string
-  providerAccountId?: Prisma.StringWithAggregatesFilter<"VirtualAccount"> | string
-  accountNumber?: Prisma.StringWithAggregatesFilter<"VirtualAccount"> | string
-  bankName?: Prisma.StringWithAggregatesFilter<"VirtualAccount"> | string
-  accountName?: Prisma.StringWithAggregatesFilter<"VirtualAccount"> | string
+  idempotencyKey?: Prisma.StringWithAggregatesFilter<"VirtualAccount"> | string
+  providerAccountId?: Prisma.StringNullableWithAggregatesFilter<"VirtualAccount"> | string | null
+  accountNumber?: Prisma.StringNullableWithAggregatesFilter<"VirtualAccount"> | string | null
+  bankName?: Prisma.StringNullableWithAggregatesFilter<"VirtualAccount"> | string | null
+  accountName?: Prisma.StringNullableWithAggregatesFilter<"VirtualAccount"> | string | null
   status?: Prisma.EnumVirtualAccountStatusWithAggregatesFilter<"VirtualAccount"> | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"VirtualAccount"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"VirtualAccount"> | Date | string
@@ -296,10 +308,11 @@ export type VirtualAccountScalarWhereWithAggregatesInput = {
 export type VirtualAccountCreateInput = {
   id?: string
   providerCode: string
-  providerAccountId: string
-  accountNumber: string
-  bankName: string
-  accountName: string
+  idempotencyKey: string
+  providerAccountId?: string | null
+  accountNumber?: string | null
+  bankName?: string | null
+  accountName?: string | null
   status?: $Enums.VirtualAccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -311,10 +324,11 @@ export type VirtualAccountUncheckedCreateInput = {
   id?: string
   walletId: string
   providerCode: string
-  providerAccountId: string
-  accountNumber: string
-  bankName: string
-  accountName: string
+  idempotencyKey: string
+  providerAccountId?: string | null
+  accountNumber?: string | null
+  bankName?: string | null
+  accountName?: string | null
   status?: $Enums.VirtualAccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -324,10 +338,11 @@ export type VirtualAccountUncheckedCreateInput = {
 export type VirtualAccountUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
-  providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  providerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVirtualAccountStatusFieldUpdateOperationsInput | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -339,10 +354,11 @@ export type VirtualAccountUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   walletId?: Prisma.StringFieldUpdateOperationsInput | string
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
-  providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  providerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVirtualAccountStatusFieldUpdateOperationsInput | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -353,10 +369,11 @@ export type VirtualAccountCreateManyInput = {
   id?: string
   walletId: string
   providerCode: string
-  providerAccountId: string
-  accountNumber: string
-  bankName: string
-  accountName: string
+  idempotencyKey: string
+  providerAccountId?: string | null
+  accountNumber?: string | null
+  bankName?: string | null
+  accountName?: string | null
   status?: $Enums.VirtualAccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -365,10 +382,11 @@ export type VirtualAccountCreateManyInput = {
 export type VirtualAccountUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
-  providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  providerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVirtualAccountStatusFieldUpdateOperationsInput | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -378,10 +396,11 @@ export type VirtualAccountUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   walletId?: Prisma.StringFieldUpdateOperationsInput | string
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
-  providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  providerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVirtualAccountStatusFieldUpdateOperationsInput | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -411,6 +430,7 @@ export type VirtualAccountCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
   providerAccountId?: Prisma.SortOrder
   accountNumber?: Prisma.SortOrder
   bankName?: Prisma.SortOrder
@@ -424,6 +444,7 @@ export type VirtualAccountMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
   providerAccountId?: Prisma.SortOrder
   accountNumber?: Prisma.SortOrder
   bankName?: Prisma.SortOrder
@@ -437,6 +458,7 @@ export type VirtualAccountMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
   providerAccountId?: Prisma.SortOrder
   accountNumber?: Prisma.SortOrder
   bankName?: Prisma.SortOrder
@@ -514,10 +536,11 @@ export type VirtualAccountUpdateOneRequiredWithoutFundingsNestedInput = {
 export type VirtualAccountCreateWithoutWalletInput = {
   id?: string
   providerCode: string
-  providerAccountId: string
-  accountNumber: string
-  bankName: string
-  accountName: string
+  idempotencyKey: string
+  providerAccountId?: string | null
+  accountNumber?: string | null
+  bankName?: string | null
+  accountName?: string | null
   status?: $Enums.VirtualAccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -527,10 +550,11 @@ export type VirtualAccountCreateWithoutWalletInput = {
 export type VirtualAccountUncheckedCreateWithoutWalletInput = {
   id?: string
   providerCode: string
-  providerAccountId: string
-  accountNumber: string
-  bankName: string
-  accountName: string
+  idempotencyKey: string
+  providerAccountId?: string | null
+  accountNumber?: string | null
+  bankName?: string | null
+  accountName?: string | null
   status?: $Enums.VirtualAccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -570,10 +594,11 @@ export type VirtualAccountScalarWhereInput = {
   id?: Prisma.StringFilter<"VirtualAccount"> | string
   walletId?: Prisma.StringFilter<"VirtualAccount"> | string
   providerCode?: Prisma.StringFilter<"VirtualAccount"> | string
-  providerAccountId?: Prisma.StringFilter<"VirtualAccount"> | string
-  accountNumber?: Prisma.StringFilter<"VirtualAccount"> | string
-  bankName?: Prisma.StringFilter<"VirtualAccount"> | string
-  accountName?: Prisma.StringFilter<"VirtualAccount"> | string
+  idempotencyKey?: Prisma.StringFilter<"VirtualAccount"> | string
+  providerAccountId?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
+  accountNumber?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
+  bankName?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
+  accountName?: Prisma.StringNullableFilter<"VirtualAccount"> | string | null
   status?: Prisma.EnumVirtualAccountStatusFilter<"VirtualAccount"> | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFilter<"VirtualAccount"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VirtualAccount"> | Date | string
@@ -582,10 +607,11 @@ export type VirtualAccountScalarWhereInput = {
 export type VirtualAccountCreateWithoutFundingsInput = {
   id?: string
   providerCode: string
-  providerAccountId: string
-  accountNumber: string
-  bankName: string
-  accountName: string
+  idempotencyKey: string
+  providerAccountId?: string | null
+  accountNumber?: string | null
+  bankName?: string | null
+  accountName?: string | null
   status?: $Enums.VirtualAccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -596,10 +622,11 @@ export type VirtualAccountUncheckedCreateWithoutFundingsInput = {
   id?: string
   walletId: string
   providerCode: string
-  providerAccountId: string
-  accountNumber: string
-  bankName: string
-  accountName: string
+  idempotencyKey: string
+  providerAccountId?: string | null
+  accountNumber?: string | null
+  bankName?: string | null
+  accountName?: string | null
   status?: $Enums.VirtualAccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -624,10 +651,11 @@ export type VirtualAccountUpdateToOneWithWhereWithoutFundingsInput = {
 export type VirtualAccountUpdateWithoutFundingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
-  providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  providerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVirtualAccountStatusFieldUpdateOperationsInput | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -638,10 +666,11 @@ export type VirtualAccountUncheckedUpdateWithoutFundingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   walletId?: Prisma.StringFieldUpdateOperationsInput | string
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
-  providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  providerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVirtualAccountStatusFieldUpdateOperationsInput | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -650,10 +679,11 @@ export type VirtualAccountUncheckedUpdateWithoutFundingsInput = {
 export type VirtualAccountCreateManyWalletInput = {
   id?: string
   providerCode: string
-  providerAccountId: string
-  accountNumber: string
-  bankName: string
-  accountName: string
+  idempotencyKey: string
+  providerAccountId?: string | null
+  accountNumber?: string | null
+  bankName?: string | null
+  accountName?: string | null
   status?: $Enums.VirtualAccountStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -662,10 +692,11 @@ export type VirtualAccountCreateManyWalletInput = {
 export type VirtualAccountUpdateWithoutWalletInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
-  providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  providerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVirtualAccountStatusFieldUpdateOperationsInput | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -675,10 +706,11 @@ export type VirtualAccountUpdateWithoutWalletInput = {
 export type VirtualAccountUncheckedUpdateWithoutWalletInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
-  providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  providerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVirtualAccountStatusFieldUpdateOperationsInput | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -688,10 +720,11 @@ export type VirtualAccountUncheckedUpdateWithoutWalletInput = {
 export type VirtualAccountUncheckedUpdateManyWithoutWalletInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
-  providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
-  accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountName?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
+  providerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumVirtualAccountStatusFieldUpdateOperationsInput | $Enums.VirtualAccountStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -732,6 +765,7 @@ export type VirtualAccountSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   walletId?: boolean
   providerCode?: boolean
+  idempotencyKey?: boolean
   providerAccountId?: boolean
   accountNumber?: boolean
   bankName?: boolean
@@ -748,6 +782,7 @@ export type VirtualAccountSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   walletId?: boolean
   providerCode?: boolean
+  idempotencyKey?: boolean
   providerAccountId?: boolean
   accountNumber?: boolean
   bankName?: boolean
@@ -762,6 +797,7 @@ export type VirtualAccountSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   walletId?: boolean
   providerCode?: boolean
+  idempotencyKey?: boolean
   providerAccountId?: boolean
   accountNumber?: boolean
   bankName?: boolean
@@ -776,6 +812,7 @@ export type VirtualAccountSelectScalar = {
   id?: boolean
   walletId?: boolean
   providerCode?: boolean
+  idempotencyKey?: boolean
   providerAccountId?: boolean
   accountNumber?: boolean
   bankName?: boolean
@@ -785,7 +822,7 @@ export type VirtualAccountSelectScalar = {
   updatedAt?: boolean
 }
 
-export type VirtualAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "walletId" | "providerCode" | "providerAccountId" | "accountNumber" | "bankName" | "accountName" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["virtualAccount"]>
+export type VirtualAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "walletId" | "providerCode" | "idempotencyKey" | "providerAccountId" | "accountNumber" | "bankName" | "accountName" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["virtualAccount"]>
 export type VirtualAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
   fundings?: boolean | Prisma.VirtualAccount$fundingsArgs<ExtArgs>
@@ -808,10 +845,11 @@ export type $VirtualAccountPayload<ExtArgs extends runtime.Types.Extensions.Inte
     id: string
     walletId: string
     providerCode: string
-    providerAccountId: string
-    accountNumber: string
-    bankName: string
-    accountName: string
+    idempotencyKey: string
+    providerAccountId: string | null
+    accountNumber: string | null
+    bankName: string | null
+    accountName: string | null
     status: $Enums.VirtualAccountStatus
     createdAt: Date
     updatedAt: Date
@@ -1243,6 +1281,7 @@ export interface VirtualAccountFieldRefs {
   readonly id: Prisma.FieldRef<"VirtualAccount", 'String'>
   readonly walletId: Prisma.FieldRef<"VirtualAccount", 'String'>
   readonly providerCode: Prisma.FieldRef<"VirtualAccount", 'String'>
+  readonly idempotencyKey: Prisma.FieldRef<"VirtualAccount", 'String'>
   readonly providerAccountId: Prisma.FieldRef<"VirtualAccount", 'String'>
   readonly accountNumber: Prisma.FieldRef<"VirtualAccount", 'String'>
   readonly bankName: Prisma.FieldRef<"VirtualAccount", 'String'>

@@ -75,8 +75,11 @@ export type IdentityVerificationLawfulBasis = (typeof IdentityVerificationLawful
 
 
 export const VirtualAccountStatus = {
+  PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE'
+  INACTIVE: 'INACTIVE',
+  FAILED: 'FAILED',
+  REVIEW_REQUIRED: 'REVIEW_REQUIRED'
 } as const
 
 export type VirtualAccountStatus = (typeof VirtualAccountStatus)[keyof typeof VirtualAccountStatus]

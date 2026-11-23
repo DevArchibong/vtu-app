@@ -1,4 +1,3 @@
-
 generator client {
   provider     = "prisma-client"
   output       = "../src/generated/prisma"
@@ -16,39 +15,41 @@ enum UserRole {
 }
 
 model User {
-  id                String             @id @default(cuid())
-  fullName          String
-  phoneNumber       String             @unique
-  email             String?            @unique
-  passwordHash      String
-   wallet            Wallet?
-  role              UserRole           @default(CUSTOMER)
-  phoneVerifiedAt   DateTime?
-  phoneVerifications PhoneVerification[]
+  id                    String                 @id @default(cuid())
+  fullName              String
+  phoneNumber           String                 @unique
+  email                 String?                @unique
+  passwordHash          String
+  wallet                Wallet?
+  role                  UserRole               @default(CUSTOMER)
+  phoneVerifiedAt       DateTime?
+  phoneVerifications    PhoneVerification[]
   identityVerifications IdentityVerification[]
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
 }
 
 model PhoneVerification {
-  id          String   @id @default(cuid())
-  userId      String
-  codeHash    String
-  expiresAt   DateTime
-  attempts    Int      @default(0)
-  consumedAt  DateTime?
-  createdAt   DateTime @default(now())
+  id         String    @id @default(cuid())
+  userId     String
+  codeHash   String
+  expiresAt  DateTime
+  attempts   Int       @default(0)
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
   @@index([expiresAt])
 }
+
 enum DataType {
   SME
   GIFTING
   CORPORATE_GIFTING
 }
+
 enum WalletTransactionType {
   CREDIT
   DEBIT
@@ -72,6 +73,7 @@ enum IdentityVerificationStatus {
   FAILED
   REVIEW_REQUIRED
 }
+
 enum IdentityVerificationLawfulBasis {
   CONSENT
   CONTRACT
@@ -82,36 +84,39 @@ enum IdentityVerificationLawfulBasis {
 }
 
 enum VirtualAccountStatus {
+  PENDING
   ACTIVE
   INACTIVE
+  FAILED
+  REVIEW_REQUIRED
 }
 
 model Network {
-  id        String        @id @default(cuid())
-  code      String        @unique
-  name      String        @unique
-  isActive  Boolean       @default(true)
+  id        String       @id @default(cuid())
+  code      String       @unique
+  name      String       @unique
+  isActive  Boolean      @default(true)
   bundles   DataBundle[]
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 }
 
 model DataBundle {
-  id             String               @id @default(cuid())
-  networkId      String
-  dataType       DataType
-  name           String
-  dataAmountMb   Int
-  validityDays   Int
+  id               String            @id @default(cuid())
+  networkId        String
+  dataType         DataType
+  name             String
+  dataAmountMb     Int
+  validityDays     Int
   sellingPriceKobo Int
-  isActive       Boolean              @default(true)
-  network        Network              @relation(fields: [networkId], references: [id], onDelete: Restrict)
+  isActive         Boolean           @default(true)
+  network          Network           @relation(fields: [networkId], references: [id], onDelete: Restrict)
   supplierProducts SupplierProduct[]
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
-  @@index([networkId, dataType, isActive])
   @@unique([networkId, dataType, name])
+  @@index([networkId, dataType, isActive])
 }
 
 model Supplier {
@@ -142,14 +147,14 @@ model SupplierProduct {
 }
 
 model Wallet {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  balanceKobo Int      @default(0)
+  id          String @id @default(cuid())
+  userId      String @unique
+  balanceKobo Int    @default(0)
 
-  user             User                @relation(fields: [userId], references: [id], onDelete: Restrict)
-  virtualAccounts  VirtualAccount[]
-  fundings         WalletFunding[]
-  transactions     WalletTransaction[]
+  user            User                @relation(fields: [userId], references: [id], onDelete: Restrict)
+  virtualAccounts VirtualAccount[]
+  fundings        WalletFunding[]
+  transactions    WalletTransaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -159,11 +164,12 @@ model VirtualAccount {
   id                String               @id @default(cuid())
   walletId          String
   providerCode      String
-  providerAccountId String
-  accountNumber     String
-  bankName          String
-  accountName       String
-  status            VirtualAccountStatus @default(ACTIVE)
+  idempotencyKey    String               @unique
+  providerAccountId String?
+  accountNumber     String?
+  bankName          String?
+  accountName       String?
+  status            VirtualAccountStatus @default(PENDING)
 
   wallet   Wallet          @relation(fields: [walletId], references: [id], onDelete: Restrict)
   fundings WalletFunding[]
@@ -174,6 +180,7 @@ model VirtualAccount {
   @@unique([providerCode, providerAccountId])
   @@unique([providerCode, accountNumber])
   @@index([walletId, status])
+  @@index([walletId, providerCode, status])
 }
 
 model WalletFunding {
@@ -189,8 +196,8 @@ model WalletFunding {
   status                WalletFundingStatus @default(PENDING)
   confirmedAt           DateTime?
 
-  wallet           Wallet             @relation(fields: [walletId], references: [id], onDelete: Restrict)
-  virtualAccount   VirtualAccount     @relation(fields: [virtualAccountId], references: [id], onDelete: Restrict)
+  wallet            Wallet             @relation(fields: [walletId], references: [id], onDelete: Restrict)
+  virtualAccount    VirtualAccount     @relation(fields: [virtualAccountId], references: [id], onDelete: Restrict)
   walletTransaction WalletTransaction?
 
   createdAt DateTime @default(now())
@@ -202,15 +209,15 @@ model WalletFunding {
 }
 
 model WalletTransaction {
-  id                  String                @id @default(cuid())
-  walletId            String
-  fundingId           String?               @unique
-  reference           String                @unique
-  type                WalletTransactionType
-  amountKobo          Int
-  balanceBeforeKobo   Int
-  balanceAfterKobo    Int
-  description         String
+  id                String                @id @default(cuid())
+  walletId          String
+  fundingId         String?               @unique
+  reference         String                @unique
+  type              WalletTransactionType
+  amountKobo        Int
+  balanceBeforeKobo Int
+  balanceAfterKobo  Int
+  description       String
 
   wallet  Wallet         @relation(fields: [walletId], references: [id], onDelete: Restrict)
   funding WalletFunding? @relation(fields: [fundingId], references: [id], onDelete: Restrict)
@@ -219,25 +226,26 @@ model WalletTransaction {
 
   @@index([walletId, createdAt])
 }
-model IdentityVerification    {
-  id                     String                     @id @default(cuid())
-  userId                 String
-  identityType           IdentityType
-  identityFingerprint   String
-  privacyNoticeVersion  String?
-  noticeAcknowledgedAt DateTime?
-  lawfulBasis           IdentityVerificationLawfulBasis?
-  consentedAt            DateTime?
 
-  status            IdentityVerificationStatus @default(PENDING)
+model IdentityVerification {
+  id                   String                           @id @default(cuid())
+  userId               String
+  identityType         IdentityType
+  identityFingerprint  String
+  privacyNoticeVersion String?
+  noticeAcknowledgedAt DateTime?
+  lawfulBasis          IdentityVerificationLawfulBasis?
+  consentedAt          DateTime?
+
+  status IdentityVerificationStatus @default(PENDING)
 
   providerCode      String
-  providerReference String?                    @unique
+  providerReference String? @unique
 
-  verifiedAt        DateTime?
-  failureCode       String?
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  verifiedAt  DateTime?
+  failureCode String?
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Restrict)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
