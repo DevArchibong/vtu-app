@@ -29,3 +29,7 @@ export const phoneVerificationRequestRateLimiter =
 
 export const phoneVerificationConfirmRateLimiter =
   createRateLimiter(10);
+
+// Protects the identity verification endpoint.
+export const identityVerificationRateLimiter =
+  createRateLimiter(5);

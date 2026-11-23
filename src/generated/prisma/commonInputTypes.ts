@@ -294,6 +294,13 @@ export type EnumIdentityTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumIdentityTypeFilter<$PrismaModel> | $Enums.IdentityType
 }
 
+export type EnumIdentityVerificationLawfulBasisNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.IdentityVerificationLawfulBasis | Prisma.EnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  in?: $Enums.IdentityVerificationLawfulBasis[] | Prisma.ListEnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.IdentityVerificationLawfulBasis[] | Prisma.ListEnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumIdentityVerificationLawfulBasisNullableFilter<$PrismaModel> | $Enums.IdentityVerificationLawfulBasis | null
+}
+
 export type EnumIdentityVerificationStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.IdentityVerificationStatus | Prisma.EnumIdentityVerificationStatusFieldRefInput<$PrismaModel>
   in?: $Enums.IdentityVerificationStatus[] | Prisma.ListEnumIdentityVerificationStatusFieldRefInput<$PrismaModel>
@@ -309,6 +316,16 @@ export type EnumIdentityTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumIdentityTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumIdentityTypeFilter<$PrismaModel>
+}
+
+export type EnumIdentityVerificationLawfulBasisNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.IdentityVerificationLawfulBasis | Prisma.EnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  in?: $Enums.IdentityVerificationLawfulBasis[] | Prisma.ListEnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.IdentityVerificationLawfulBasis[] | Prisma.ListEnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumIdentityVerificationLawfulBasisNullableWithAggregatesFilter<$PrismaModel> | $Enums.IdentityVerificationLawfulBasis | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumIdentityVerificationLawfulBasisNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumIdentityVerificationLawfulBasisNullableFilter<$PrismaModel>
 }
 
 export type EnumIdentityVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -614,6 +631,13 @@ export type NestedEnumIdentityTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumIdentityTypeFilter<$PrismaModel> | $Enums.IdentityType
 }
 
+export type NestedEnumIdentityVerificationLawfulBasisNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.IdentityVerificationLawfulBasis | Prisma.EnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  in?: $Enums.IdentityVerificationLawfulBasis[] | Prisma.ListEnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.IdentityVerificationLawfulBasis[] | Prisma.ListEnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumIdentityVerificationLawfulBasisNullableFilter<$PrismaModel> | $Enums.IdentityVerificationLawfulBasis | null
+}
+
 export type NestedEnumIdentityVerificationStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.IdentityVerificationStatus | Prisma.EnumIdentityVerificationStatusFieldRefInput<$PrismaModel>
   in?: $Enums.IdentityVerificationStatus[] | Prisma.ListEnumIdentityVerificationStatusFieldRefInput<$PrismaModel>
@@ -629,6 +653,16 @@ export type NestedEnumIdentityTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumIdentityTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumIdentityTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumIdentityVerificationLawfulBasisNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.IdentityVerificationLawfulBasis | Prisma.EnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  in?: $Enums.IdentityVerificationLawfulBasis[] | Prisma.ListEnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.IdentityVerificationLawfulBasis[] | Prisma.ListEnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumIdentityVerificationLawfulBasisNullableWithAggregatesFilter<$PrismaModel> | $Enums.IdentityVerificationLawfulBasis | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumIdentityVerificationLawfulBasisNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumIdentityVerificationLawfulBasisNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumIdentityVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {

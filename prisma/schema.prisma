@@ -72,6 +72,14 @@ enum IdentityVerificationStatus {
   FAILED
   REVIEW_REQUIRED
 }
+enum IdentityVerificationLawfulBasis {
+  CONSENT
+  CONTRACT
+  LEGAL_OBLIGATION
+  VITAL_INTEREST
+  PUBLIC_INTEREST
+  LEGITIMATE_INTEREST
+}
 
 enum VirtualAccountStatus {
   ACTIVE
@@ -211,10 +219,16 @@ model WalletTransaction {
 
   @@index([walletId, createdAt])
 }
-model IdentityVerification {
-  id                String                     @id @default(cuid())
-  userId            String
-  identityType      IdentityType
+model IdentityVerification    {
+  id                     String                     @id @default(cuid())
+  userId                 String
+  identityType           IdentityType
+  identityFingerprint   String
+  privacyNoticeVersion  String?
+  noticeAcknowledgedAt DateTime?
+  lawfulBasis           IdentityVerificationLawfulBasis?
+  consentedAt            DateTime?
+
   status            IdentityVerificationStatus @default(PENDING)
 
   providerCode      String
@@ -222,7 +236,7 @@ model IdentityVerification {
 
   verifiedAt        DateTime?
   failureCode       String?
-
+ 
   user User @relation(fields: [userId], references: [id], onDelete: Restrict)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

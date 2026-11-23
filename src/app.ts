@@ -6,6 +6,7 @@ import {
   loginRateLimiter,
   phoneVerificationRequestRateLimiter,
   phoneVerificationConfirmRateLimiter,
+  identityVerificationRateLimiter,
 } from "./middleware/rateLimiters.js";
 import { healthRouter } from "./routes/health.js";
 import { authRouter } from "./routes/auth.js";
@@ -14,6 +15,7 @@ import { profileRouter } from "./routes/profile.js";
 import { phoneVerificationRouter } from "./routes/phoneVerification.js";
 import { dataCatalogueRouter } from "./routes/dataCatalogue.js";
 import { walletRouter } from "./routes/wallet.js";
+import { createIdentityVerificationRouter } from "./routes/identityVerification.js";
 
 export const app = express();
 
@@ -30,6 +32,10 @@ app.use(
   "/api/auth/phone-verification/confirm",
   phoneVerificationConfirmRateLimiter,
 );
+app.use(
+  "/api/identity/verify",
+  identityVerificationRateLimiter,
+);
 
 app.use("/api", healthRouter);
 app.use("/api/auth", authRouter);
@@ -38,5 +44,6 @@ app.use("/api/auth/phone-verification", phoneVerificationRouter);
 app.use("/api", profileRouter);
 app.use("/api", dataCatalogueRouter);
 app.use("/api", walletRouter);
+app.use("/api/identity", createIdentityVerificationRouter(null));
 app.use(notFoundHandler);
 app.use(errorHandler);

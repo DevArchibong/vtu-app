@@ -28,6 +28,11 @@ export type IdentityVerificationMinAggregateOutputType = {
   id: string | null
   userId: string | null
   identityType: $Enums.IdentityType | null
+  identityFingerprint: string | null
+  privacyNoticeVersion: string | null
+  noticeAcknowledgedAt: Date | null
+  lawfulBasis: $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt: Date | null
   status: $Enums.IdentityVerificationStatus | null
   providerCode: string | null
   providerReference: string | null
@@ -41,6 +46,11 @@ export type IdentityVerificationMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   identityType: $Enums.IdentityType | null
+  identityFingerprint: string | null
+  privacyNoticeVersion: string | null
+  noticeAcknowledgedAt: Date | null
+  lawfulBasis: $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt: Date | null
   status: $Enums.IdentityVerificationStatus | null
   providerCode: string | null
   providerReference: string | null
@@ -54,6 +64,11 @@ export type IdentityVerificationCountAggregateOutputType = {
   id: number
   userId: number
   identityType: number
+  identityFingerprint: number
+  privacyNoticeVersion: number
+  noticeAcknowledgedAt: number
+  lawfulBasis: number
+  consentedAt: number
   status: number
   providerCode: number
   providerReference: number
@@ -69,6 +84,11 @@ export type IdentityVerificationMinAggregateInputType = {
   id?: true
   userId?: true
   identityType?: true
+  identityFingerprint?: true
+  privacyNoticeVersion?: true
+  noticeAcknowledgedAt?: true
+  lawfulBasis?: true
+  consentedAt?: true
   status?: true
   providerCode?: true
   providerReference?: true
@@ -82,6 +102,11 @@ export type IdentityVerificationMaxAggregateInputType = {
   id?: true
   userId?: true
   identityType?: true
+  identityFingerprint?: true
+  privacyNoticeVersion?: true
+  noticeAcknowledgedAt?: true
+  lawfulBasis?: true
+  consentedAt?: true
   status?: true
   providerCode?: true
   providerReference?: true
@@ -95,6 +120,11 @@ export type IdentityVerificationCountAggregateInputType = {
   id?: true
   userId?: true
   identityType?: true
+  identityFingerprint?: true
+  privacyNoticeVersion?: true
+  noticeAcknowledgedAt?: true
+  lawfulBasis?: true
+  consentedAt?: true
   status?: true
   providerCode?: true
   providerReference?: true
@@ -181,6 +211,11 @@ export type IdentityVerificationGroupByOutputType = {
   id: string
   userId: string
   identityType: $Enums.IdentityType
+  identityFingerprint: string
+  privacyNoticeVersion: string | null
+  noticeAcknowledgedAt: Date | null
+  lawfulBasis: $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt: Date | null
   status: $Enums.IdentityVerificationStatus
   providerCode: string
   providerReference: string | null
@@ -215,6 +250,11 @@ export type IdentityVerificationWhereInput = {
   id?: Prisma.StringFilter<"IdentityVerification"> | string
   userId?: Prisma.StringFilter<"IdentityVerification"> | string
   identityType?: Prisma.EnumIdentityTypeFilter<"IdentityVerification"> | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFilter<"IdentityVerification"> | string
+  privacyNoticeVersion?: Prisma.StringNullableFilter<"IdentityVerification"> | string | null
+  noticeAcknowledgedAt?: Prisma.DateTimeNullableFilter<"IdentityVerification"> | Date | string | null
+  lawfulBasis?: Prisma.EnumIdentityVerificationLawfulBasisNullableFilter<"IdentityVerification"> | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.DateTimeNullableFilter<"IdentityVerification"> | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFilter<"IdentityVerification"> | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFilter<"IdentityVerification"> | string
   providerReference?: Prisma.StringNullableFilter<"IdentityVerification"> | string | null
@@ -229,6 +269,11 @@ export type IdentityVerificationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   identityType?: Prisma.SortOrder
+  identityFingerprint?: Prisma.SortOrder
+  privacyNoticeVersion?: Prisma.SortOrderInput | Prisma.SortOrder
+  noticeAcknowledgedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lawfulBasis?: Prisma.SortOrderInput | Prisma.SortOrder
+  consentedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
   providerReference?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -247,6 +292,11 @@ export type IdentityVerificationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.IdentityVerificationWhereInput | Prisma.IdentityVerificationWhereInput[]
   userId?: Prisma.StringFilter<"IdentityVerification"> | string
   identityType?: Prisma.EnumIdentityTypeFilter<"IdentityVerification"> | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFilter<"IdentityVerification"> | string
+  privacyNoticeVersion?: Prisma.StringNullableFilter<"IdentityVerification"> | string | null
+  noticeAcknowledgedAt?: Prisma.DateTimeNullableFilter<"IdentityVerification"> | Date | string | null
+  lawfulBasis?: Prisma.EnumIdentityVerificationLawfulBasisNullableFilter<"IdentityVerification"> | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.DateTimeNullableFilter<"IdentityVerification"> | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFilter<"IdentityVerification"> | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFilter<"IdentityVerification"> | string
   verifiedAt?: Prisma.DateTimeNullableFilter<"IdentityVerification"> | Date | string | null
@@ -260,6 +310,11 @@ export type IdentityVerificationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   identityType?: Prisma.SortOrder
+  identityFingerprint?: Prisma.SortOrder
+  privacyNoticeVersion?: Prisma.SortOrderInput | Prisma.SortOrder
+  noticeAcknowledgedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lawfulBasis?: Prisma.SortOrderInput | Prisma.SortOrder
+  consentedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
   providerReference?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -279,6 +334,11 @@ export type IdentityVerificationScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"IdentityVerification"> | string
   userId?: Prisma.StringWithAggregatesFilter<"IdentityVerification"> | string
   identityType?: Prisma.EnumIdentityTypeWithAggregatesFilter<"IdentityVerification"> | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringWithAggregatesFilter<"IdentityVerification"> | string
+  privacyNoticeVersion?: Prisma.StringNullableWithAggregatesFilter<"IdentityVerification"> | string | null
+  noticeAcknowledgedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"IdentityVerification"> | Date | string | null
+  lawfulBasis?: Prisma.EnumIdentityVerificationLawfulBasisNullableWithAggregatesFilter<"IdentityVerification"> | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"IdentityVerification"> | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusWithAggregatesFilter<"IdentityVerification"> | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringWithAggregatesFilter<"IdentityVerification"> | string
   providerReference?: Prisma.StringNullableWithAggregatesFilter<"IdentityVerification"> | string | null
@@ -291,6 +351,11 @@ export type IdentityVerificationScalarWhereWithAggregatesInput = {
 export type IdentityVerificationCreateInput = {
   id?: string
   identityType: $Enums.IdentityType
+  identityFingerprint: string
+  privacyNoticeVersion?: string | null
+  noticeAcknowledgedAt?: Date | string | null
+  lawfulBasis?: $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Date | string | null
   status?: $Enums.IdentityVerificationStatus
   providerCode: string
   providerReference?: string | null
@@ -305,6 +370,11 @@ export type IdentityVerificationUncheckedCreateInput = {
   id?: string
   userId: string
   identityType: $Enums.IdentityType
+  identityFingerprint: string
+  privacyNoticeVersion?: string | null
+  noticeAcknowledgedAt?: Date | string | null
+  lawfulBasis?: $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Date | string | null
   status?: $Enums.IdentityVerificationStatus
   providerCode: string
   providerReference?: string | null
@@ -317,6 +387,11 @@ export type IdentityVerificationUncheckedCreateInput = {
 export type IdentityVerificationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   identityType?: Prisma.EnumIdentityTypeFieldUpdateOperationsInput | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  privacyNoticeVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noticeAcknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lawfulBasis?: Prisma.NullableEnumIdentityVerificationLawfulBasisFieldUpdateOperationsInput | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFieldUpdateOperationsInput | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
   providerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -331,6 +406,11 @@ export type IdentityVerificationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   identityType?: Prisma.EnumIdentityTypeFieldUpdateOperationsInput | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  privacyNoticeVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noticeAcknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lawfulBasis?: Prisma.NullableEnumIdentityVerificationLawfulBasisFieldUpdateOperationsInput | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFieldUpdateOperationsInput | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
   providerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -344,6 +424,11 @@ export type IdentityVerificationCreateManyInput = {
   id?: string
   userId: string
   identityType: $Enums.IdentityType
+  identityFingerprint: string
+  privacyNoticeVersion?: string | null
+  noticeAcknowledgedAt?: Date | string | null
+  lawfulBasis?: $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Date | string | null
   status?: $Enums.IdentityVerificationStatus
   providerCode: string
   providerReference?: string | null
@@ -356,6 +441,11 @@ export type IdentityVerificationCreateManyInput = {
 export type IdentityVerificationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   identityType?: Prisma.EnumIdentityTypeFieldUpdateOperationsInput | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  privacyNoticeVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noticeAcknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lawfulBasis?: Prisma.NullableEnumIdentityVerificationLawfulBasisFieldUpdateOperationsInput | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFieldUpdateOperationsInput | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
   providerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -369,6 +459,11 @@ export type IdentityVerificationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   identityType?: Prisma.EnumIdentityTypeFieldUpdateOperationsInput | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  privacyNoticeVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noticeAcknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lawfulBasis?: Prisma.NullableEnumIdentityVerificationLawfulBasisFieldUpdateOperationsInput | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFieldUpdateOperationsInput | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
   providerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -392,6 +487,11 @@ export type IdentityVerificationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   identityType?: Prisma.SortOrder
+  identityFingerprint?: Prisma.SortOrder
+  privacyNoticeVersion?: Prisma.SortOrder
+  noticeAcknowledgedAt?: Prisma.SortOrder
+  lawfulBasis?: Prisma.SortOrder
+  consentedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
   providerReference?: Prisma.SortOrder
@@ -405,6 +505,11 @@ export type IdentityVerificationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   identityType?: Prisma.SortOrder
+  identityFingerprint?: Prisma.SortOrder
+  privacyNoticeVersion?: Prisma.SortOrder
+  noticeAcknowledgedAt?: Prisma.SortOrder
+  lawfulBasis?: Prisma.SortOrder
+  consentedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
   providerReference?: Prisma.SortOrder
@@ -418,6 +523,11 @@ export type IdentityVerificationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   identityType?: Prisma.SortOrder
+  identityFingerprint?: Prisma.SortOrder
+  privacyNoticeVersion?: Prisma.SortOrder
+  noticeAcknowledgedAt?: Prisma.SortOrder
+  lawfulBasis?: Prisma.SortOrder
+  consentedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   providerCode?: Prisma.SortOrder
   providerReference?: Prisma.SortOrder
@@ -473,6 +583,10 @@ export type EnumIdentityTypeFieldUpdateOperationsInput = {
   set?: $Enums.IdentityType
 }
 
+export type NullableEnumIdentityVerificationLawfulBasisFieldUpdateOperationsInput = {
+  set?: $Enums.IdentityVerificationLawfulBasis | null
+}
+
 export type EnumIdentityVerificationStatusFieldUpdateOperationsInput = {
   set?: $Enums.IdentityVerificationStatus
 }
@@ -480,6 +594,11 @@ export type EnumIdentityVerificationStatusFieldUpdateOperationsInput = {
 export type IdentityVerificationCreateWithoutUserInput = {
   id?: string
   identityType: $Enums.IdentityType
+  identityFingerprint: string
+  privacyNoticeVersion?: string | null
+  noticeAcknowledgedAt?: Date | string | null
+  lawfulBasis?: $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Date | string | null
   status?: $Enums.IdentityVerificationStatus
   providerCode: string
   providerReference?: string | null
@@ -492,6 +611,11 @@ export type IdentityVerificationCreateWithoutUserInput = {
 export type IdentityVerificationUncheckedCreateWithoutUserInput = {
   id?: string
   identityType: $Enums.IdentityType
+  identityFingerprint: string
+  privacyNoticeVersion?: string | null
+  noticeAcknowledgedAt?: Date | string | null
+  lawfulBasis?: $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Date | string | null
   status?: $Enums.IdentityVerificationStatus
   providerCode: string
   providerReference?: string | null
@@ -534,6 +658,11 @@ export type IdentityVerificationScalarWhereInput = {
   id?: Prisma.StringFilter<"IdentityVerification"> | string
   userId?: Prisma.StringFilter<"IdentityVerification"> | string
   identityType?: Prisma.EnumIdentityTypeFilter<"IdentityVerification"> | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFilter<"IdentityVerification"> | string
+  privacyNoticeVersion?: Prisma.StringNullableFilter<"IdentityVerification"> | string | null
+  noticeAcknowledgedAt?: Prisma.DateTimeNullableFilter<"IdentityVerification"> | Date | string | null
+  lawfulBasis?: Prisma.EnumIdentityVerificationLawfulBasisNullableFilter<"IdentityVerification"> | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.DateTimeNullableFilter<"IdentityVerification"> | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFilter<"IdentityVerification"> | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFilter<"IdentityVerification"> | string
   providerReference?: Prisma.StringNullableFilter<"IdentityVerification"> | string | null
@@ -546,6 +675,11 @@ export type IdentityVerificationScalarWhereInput = {
 export type IdentityVerificationCreateManyUserInput = {
   id?: string
   identityType: $Enums.IdentityType
+  identityFingerprint: string
+  privacyNoticeVersion?: string | null
+  noticeAcknowledgedAt?: Date | string | null
+  lawfulBasis?: $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Date | string | null
   status?: $Enums.IdentityVerificationStatus
   providerCode: string
   providerReference?: string | null
@@ -558,6 +692,11 @@ export type IdentityVerificationCreateManyUserInput = {
 export type IdentityVerificationUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   identityType?: Prisma.EnumIdentityTypeFieldUpdateOperationsInput | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  privacyNoticeVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noticeAcknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lawfulBasis?: Prisma.NullableEnumIdentityVerificationLawfulBasisFieldUpdateOperationsInput | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFieldUpdateOperationsInput | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
   providerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -570,6 +709,11 @@ export type IdentityVerificationUpdateWithoutUserInput = {
 export type IdentityVerificationUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   identityType?: Prisma.EnumIdentityTypeFieldUpdateOperationsInput | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  privacyNoticeVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noticeAcknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lawfulBasis?: Prisma.NullableEnumIdentityVerificationLawfulBasisFieldUpdateOperationsInput | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFieldUpdateOperationsInput | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
   providerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -582,6 +726,11 @@ export type IdentityVerificationUncheckedUpdateWithoutUserInput = {
 export type IdentityVerificationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   identityType?: Prisma.EnumIdentityTypeFieldUpdateOperationsInput | $Enums.IdentityType
+  identityFingerprint?: Prisma.StringFieldUpdateOperationsInput | string
+  privacyNoticeVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  noticeAcknowledgedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lawfulBasis?: Prisma.NullableEnumIdentityVerificationLawfulBasisFieldUpdateOperationsInput | $Enums.IdentityVerificationLawfulBasis | null
+  consentedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumIdentityVerificationStatusFieldUpdateOperationsInput | $Enums.IdentityVerificationStatus
   providerCode?: Prisma.StringFieldUpdateOperationsInput | string
   providerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -597,6 +746,11 @@ export type IdentityVerificationSelect<ExtArgs extends runtime.Types.Extensions.
   id?: boolean
   userId?: boolean
   identityType?: boolean
+  identityFingerprint?: boolean
+  privacyNoticeVersion?: boolean
+  noticeAcknowledgedAt?: boolean
+  lawfulBasis?: boolean
+  consentedAt?: boolean
   status?: boolean
   providerCode?: boolean
   providerReference?: boolean
@@ -611,6 +765,11 @@ export type IdentityVerificationSelectCreateManyAndReturn<ExtArgs extends runtim
   id?: boolean
   userId?: boolean
   identityType?: boolean
+  identityFingerprint?: boolean
+  privacyNoticeVersion?: boolean
+  noticeAcknowledgedAt?: boolean
+  lawfulBasis?: boolean
+  consentedAt?: boolean
   status?: boolean
   providerCode?: boolean
   providerReference?: boolean
@@ -625,6 +784,11 @@ export type IdentityVerificationSelectUpdateManyAndReturn<ExtArgs extends runtim
   id?: boolean
   userId?: boolean
   identityType?: boolean
+  identityFingerprint?: boolean
+  privacyNoticeVersion?: boolean
+  noticeAcknowledgedAt?: boolean
+  lawfulBasis?: boolean
+  consentedAt?: boolean
   status?: boolean
   providerCode?: boolean
   providerReference?: boolean
@@ -639,6 +803,11 @@ export type IdentityVerificationSelectScalar = {
   id?: boolean
   userId?: boolean
   identityType?: boolean
+  identityFingerprint?: boolean
+  privacyNoticeVersion?: boolean
+  noticeAcknowledgedAt?: boolean
+  lawfulBasis?: boolean
+  consentedAt?: boolean
   status?: boolean
   providerCode?: boolean
   providerReference?: boolean
@@ -648,7 +817,7 @@ export type IdentityVerificationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type IdentityVerificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "identityType" | "status" | "providerCode" | "providerReference" | "verifiedAt" | "failureCode" | "createdAt" | "updatedAt", ExtArgs["result"]["identityVerification"]>
+export type IdentityVerificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "identityType" | "identityFingerprint" | "privacyNoticeVersion" | "noticeAcknowledgedAt" | "lawfulBasis" | "consentedAt" | "status" | "providerCode" | "providerReference" | "verifiedAt" | "failureCode" | "createdAt" | "updatedAt", ExtArgs["result"]["identityVerification"]>
 export type IdentityVerificationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -668,6 +837,11 @@ export type $IdentityVerificationPayload<ExtArgs extends runtime.Types.Extension
     id: string
     userId: string
     identityType: $Enums.IdentityType
+    identityFingerprint: string
+    privacyNoticeVersion: string | null
+    noticeAcknowledgedAt: Date | null
+    lawfulBasis: $Enums.IdentityVerificationLawfulBasis | null
+    consentedAt: Date | null
     status: $Enums.IdentityVerificationStatus
     providerCode: string
     providerReference: string | null
@@ -1102,6 +1276,11 @@ export interface IdentityVerificationFieldRefs {
   readonly id: Prisma.FieldRef<"IdentityVerification", 'String'>
   readonly userId: Prisma.FieldRef<"IdentityVerification", 'String'>
   readonly identityType: Prisma.FieldRef<"IdentityVerification", 'IdentityType'>
+  readonly identityFingerprint: Prisma.FieldRef<"IdentityVerification", 'String'>
+  readonly privacyNoticeVersion: Prisma.FieldRef<"IdentityVerification", 'String'>
+  readonly noticeAcknowledgedAt: Prisma.FieldRef<"IdentityVerification", 'DateTime'>
+  readonly lawfulBasis: Prisma.FieldRef<"IdentityVerification", 'IdentityVerificationLawfulBasis'>
+  readonly consentedAt: Prisma.FieldRef<"IdentityVerification", 'DateTime'>
   readonly status: Prisma.FieldRef<"IdentityVerification", 'IdentityVerificationStatus'>
   readonly providerCode: Prisma.FieldRef<"IdentityVerification", 'String'>
   readonly providerReference: Prisma.FieldRef<"IdentityVerification", 'String'>

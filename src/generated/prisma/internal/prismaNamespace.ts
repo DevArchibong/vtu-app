@@ -1428,6 +1428,11 @@ export const IdentityVerificationScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   identityType: 'identityType',
+  identityFingerprint: 'identityFingerprint',
+  privacyNoticeVersion: 'privacyNoticeVersion',
+  noticeAcknowledgedAt: 'noticeAcknowledgedAt',
+  lawfulBasis: 'lawfulBasis',
+  consentedAt: 'consentedAt',
   status: 'status',
   providerCode: 'providerCode',
   providerReference: 'providerReference',
@@ -1600,6 +1605,20 @@ export type EnumIdentityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'IdentityType[]'
  */
 export type ListEnumIdentityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityVerificationLawfulBasis'
+ */
+export type EnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityVerificationLawfulBasis'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityVerificationLawfulBasis[]'
+ */
+export type ListEnumIdentityVerificationLawfulBasisFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityVerificationLawfulBasis[]'>
     
 
 

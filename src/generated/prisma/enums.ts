@@ -62,6 +62,18 @@ export const IdentityVerificationStatus = {
 export type IdentityVerificationStatus = (typeof IdentityVerificationStatus)[keyof typeof IdentityVerificationStatus]
 
 
+export const IdentityVerificationLawfulBasis = {
+  CONSENT: 'CONSENT',
+  CONTRACT: 'CONTRACT',
+  LEGAL_OBLIGATION: 'LEGAL_OBLIGATION',
+  VITAL_INTEREST: 'VITAL_INTEREST',
+  PUBLIC_INTEREST: 'PUBLIC_INTEREST',
+  LEGITIMATE_INTEREST: 'LEGITIMATE_INTEREST'
+} as const
+
+export type IdentityVerificationLawfulBasis = (typeof IdentityVerificationLawfulBasis)[keyof typeof IdentityVerificationLawfulBasis]
+
+
 export const VirtualAccountStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE'

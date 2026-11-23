@@ -1,8 +1,15 @@
 
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { prisma } from "../lib/prisma.js";
+
+import {
+  getIdentityVerificationComplianceConfig,
+} from "../config/identityVerification.js";
+
 import type {
   IdentityType,
   IdentityVerificationProvider,
+  IdentityVerificationProviderResult,
 } from "../providers/identityVerificationProvider.js";
 
 export class IdentityVerificationError extends Error {
@@ -15,10 +22,92 @@ export class IdentityVerificationError extends Error {
   }
 }
 
+/**
+ * Validates an external identity provider response at runtime.
+ * TypeScript interfaces alone cannot validate external API responses.
+ */
+function isValidProviderResponse(
+  result: unknown,
+  expectedProviderCode: string,
+): result is IdentityVerificationProviderResult {
+  if (
+    typeof result !== "object" ||
+    result === null ||
+    Array.isArray(result)
+  ) {
+    return false;
+  }
+
+  const response = result as Record<string, unknown>;
+
+  const validStatuses = [
+    "VERIFIED",
+    "FAILED",
+    "REVIEW_REQUIRED",
+  ];
+
+  return (
+    typeof response.providerCode === "string" &&
+    response.providerCode === expectedProviderCode &&
+    typeof response.providerReference === "string" &&
+    response.providerReference.trim().length > 0 &&
+    typeof response.status === "string" &&
+    validStatuses.includes(response.status) &&
+    (
+      response.failureCode === undefined ||
+      typeof response.failureCode === "string"
+    )
+  );
+}
+
+function createIdentityFingerprint(
+  identityType: IdentityType,
+  identityNumber: string,
+): string {
+  const secret = process.env.IDENTITY_FINGERPRINT_SECRET;
+
+  if (!secret) {
+    throw new IdentityVerificationError(
+      "Identity verification is not properly configured.",
+      "IDENTITY_CONFIGURATION_ERROR",
+    );
+  }
+
+  return createHmac("sha256", secret)
+    .update(
+      `identity-verification:v1:${identityType}:${identityNumber}`,
+    )
+    .digest("hex");
+}
+
+function fingerprintsMatch(
+  storedFingerprint: string,
+  submittedFingerprint: string,
+): boolean {
+  if (
+    !/^[a-f0-9]{64}$/.test(storedFingerprint) ||
+    !/^[a-f0-9]{64}$/.test(submittedFingerprint)
+  ) {
+    return false;
+  }
+
+  return timingSafeEqual(
+    Buffer.from(storedFingerprint, "hex"),
+    Buffer.from(submittedFingerprint, "hex"),
+  );
+}
+
 function validateIdentityNumber(
   identityType: IdentityType,
   identityNumber: string,
 ): void {
+  if (identityType !== "NIN" && identityType !== "BVN") {
+    throw new IdentityVerificationError(
+      "Invalid identity type.",
+      "INVALID_IDENTITY_TYPE",
+    );
+  }
+
   if (!/^\d{11}$/.test(identityNumber)) {
     throw new IdentityVerificationError(
       `${identityType} must contain exactly 11 digits.`,
@@ -32,15 +121,40 @@ export async function verifyCustomerIdentity(
   identityType: IdentityType,
   identityNumber: string,
   provider: IdentityVerificationProvider,
+  privacyNoticeAcknowledged: boolean,
 ) {
   validateIdentityNumber(identityType, identityNumber);
 
-  if (!identityNumber || !provider.providerCode) {
+  if (!userId || !provider.providerCode) {
     throw new IdentityVerificationError(
       "Invalid identity verification request.",
       "INVALID_REQUEST",
     );
   }
+
+  // Require explicit acknowledgement of the privacy notice.
+  if (privacyNoticeAcknowledged !== true) {
+    throw new IdentityVerificationError(
+      "You must acknowledge the privacy notice before identity verification.",
+      "PRIVACY_NOTICE_ACKNOWLEDGEMENT_REQUIRED",
+    );
+  }
+
+  // Validate the server-controlled compliance configuration.
+  const complianceConfig =
+    getIdentityVerificationComplianceConfig();
+
+  if (!complianceConfig) {
+    throw new IdentityVerificationError(
+      "Identity verification compliance configuration is missing or invalid.",
+      "IDENTITY_COMPLIANCE_CONFIGURATION_ERROR",
+    );
+  }
+
+  const fingerprint = createIdentityFingerprint(
+    identityType,
+    identityNumber,
+  );
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -60,24 +174,28 @@ export async function verifyCustomerIdentity(
   }
 
   // Create or reuse a pending verification record.
-  // The lock prevents simultaneous requests from creating
-  // separate records for the same customer.
+  // The advisory lock prevents simultaneous requests from
+  // creating separate records for the same customer.
   const verification = await prisma.$transaction(async (tx) => {
     await tx.$queryRaw`
-      SELECT pg_advisory_xact_lock(
-        hashtext(${userId})::bigint
-      )
+      SELECT 1 AS locked
+      FROM (
+        SELECT pg_advisory_xact_lock(
+          hashtext(${userId})::bigint
+        )
+      ) AS lock_result
     `;
 
-    const existingVerified = await tx.identityVerification.findFirst({
-      where: {
-        userId,
-        status: "VERIFIED",
-      },
-      select: {
-        id: true,
-      },
-    });
+    const existingVerified =
+      await tx.identityVerification.findFirst({
+        where: {
+          userId,
+          status: "VERIFIED",
+        },
+        select: {
+          id: true,
+        },
+      });
 
     if (existingVerified) {
       throw new IdentityVerificationError(
@@ -86,15 +204,16 @@ export async function verifyCustomerIdentity(
       );
     }
 
-    const existingReview = await tx.identityVerification.findFirst({
-      where: {
-        userId,
-        identityType,
-        status: "REVIEW_REQUIRED",
-      },
-      orderBy: { createdAt: "desc" },
-      select: { id: true },
-    });
+    const existingReview =
+      await tx.identityVerification.findFirst({
+        where: {
+          userId,
+          identityType,
+          status: "REVIEW_REQUIRED",
+        },
+        orderBy: { createdAt: "desc" },
+        select: { id: true },
+      });
 
     if (existingReview) {
       throw new IdentityVerificationError(
@@ -103,14 +222,15 @@ export async function verifyCustomerIdentity(
       );
     }
 
-    const pending = await tx.identityVerification.findFirst({
-      where: {
-        userId,
-        identityType,
-        status: "PENDING",
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    const pending =
+      await tx.identityVerification.findFirst({
+        where: {
+          userId,
+          identityType,
+          status: "PENDING",
+        },
+        orderBy: { createdAt: "desc" },
+      });
 
     if (pending) {
       if (pending.providerCode !== provider.providerCode) {
@@ -120,22 +240,63 @@ export async function verifyCustomerIdentity(
         );
       }
 
+      if (
+        !fingerprintsMatch(
+          pending.identityFingerprint,
+          fingerprint,
+        )
+      ) {
+        throw new IdentityVerificationError(
+          "The identity number does not match the pending verification.",
+          "IDENTITY_NUMBER_MISMATCH",
+        );
+      }
+
+      // A pending record can only be reused if its original
+      // compliance details still match the current configuration.
+      if (
+        pending.privacyNoticeVersion !==
+          complianceConfig.privacyNoticeVersion ||
+        pending.lawfulBasis !== complianceConfig.lawfulBasis ||
+        !pending.noticeAcknowledgedAt
+      ) {
+        throw new IdentityVerificationError(
+          "The pending verification does not match the current compliance requirements.",
+          "IDENTITY_COMPLIANCE_MISMATCH",
+        );
+      }
+
       return pending;
     }
+
+    const acknowledgedAt = new Date();
 
     return tx.identityVerification.create({
       data: {
         userId,
         identityType,
+        identityFingerprint: fingerprint,
+
+        privacyNoticeVersion:
+          complianceConfig.privacyNoticeVersion,
+
+        noticeAcknowledgedAt: acknowledgedAt,
+
+        lawfulBasis: complianceConfig.lawfulBasis,
+
+        consentedAt:
+          complianceConfig.lawfulBasis === "CONSENT"
+            ? acknowledgedAt
+            : null,
+
         providerCode: provider.providerCode,
         status: "PENDING",
       },
     });
   });
 
-  // The record ID gives every attempt a stable idempotency key.
-  // Retries of a pending record reuse the same key.
-  let providerResult;
+  // Retries reuse the same record ID and idempotency key.
+  let providerResult: unknown;
 
   try {
     providerResult = await provider.verifyIdentity({
@@ -148,8 +309,7 @@ export async function verifyCustomerIdentity(
       idempotencyKey: `identity-verification-${verification.id}`,
     });
   } catch {
-    // Do not mark an uncertain provider response as failed.
-    // A retry can reuse the same pending record and idempotency key.
+    // Preserve PENDING when the provider's response is uncertain.
     throw new IdentityVerificationError(
       "Identity verification is temporarily unavailable. Please try again.",
       "IDENTITY_PROVIDER_UNAVAILABLE",
@@ -157,8 +317,10 @@ export async function verifyCustomerIdentity(
   }
 
   if (
-    providerResult.providerCode !== provider.providerCode ||
-    !providerResult.providerReference
+    !isValidProviderResponse(
+      providerResult,
+      provider.providerCode,
+    )
   ) {
     throw new IdentityVerificationError(
       "The identity provider returned an invalid response.",
