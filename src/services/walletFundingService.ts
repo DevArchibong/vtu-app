@@ -126,15 +126,18 @@ async function acquireFundingLocks(
   providerTransactionId: string,
 ): Promise<void> {
   const lockKeys = [
-    `funding-reference:${providerCode}:${providerReference}`,
+    `funding-reference:${providerReference}`,
     `funding-transaction:${providerCode}:${providerTransactionId}`,
   ].sort();
 
   for (const lockKey of lockKeys) {
     await tx.$queryRaw`
-      SELECT pg_advisory_xact_lock(
-        hashtext(${lockKey})::bigint
+      WITH acquired_lock AS (
+        SELECT pg_advisory_xact_lock(
+          hashtext(${lockKey})::bigint
+        )
       )
+      SELECT 1::integer AS locked
     `;
   }
 }
@@ -152,126 +155,175 @@ export async function processVerifiedPaymentNotification(
       notification.providerTransactionId,
     );
 
-    const virtualAccount = await tx.virtualAccount.findFirst({
-      where: {
-        providerCode: notification.providerCode,
-        accountNumber: notification.accountNumber,
-        status: "ACTIVE",
-      },
-      select: {
-        id: true,
-        walletId: true,
-      },
-    });
-
-    if (!virtualAccount) {
-      throw new WalletFundingError(
-        "No active virtual account matches this payment.",
-        "VIRTUAL_ACCOUNT_NOT_FOUND",
-      );
-    }
 
     const existingFunding = await tx.walletFunding.findFirst({
-      where: {
-        OR: [
-          {
-            providerReference: notification.providerReference,
-          },
-          {
-            providerCode: notification.providerCode,
-            providerTransactionId:
-              notification.providerTransactionId,
-          },
-        ],
-      },
-    });
-
-    if (existingFunding) {
-      if (
-        existingFunding.providerCode !== notification.providerCode ||
-        existingFunding.providerReference !==
-          notification.providerReference ||
-        existingFunding.virtualAccountId !== virtualAccount.id
-      ) {
+        where: {
+          OR: [
+            {
+              providerReference: notification.providerReference,
+            },
+            {
+              providerCode: notification.providerCode,
+              providerTransactionId:
+                notification.providerTransactionId,
+            },
+          ],
+        },
+      });
+      
+      const virtualAccount = existingFunding
+        ? await tx.virtualAccount.findUnique({
+            where: {
+              id: existingFunding.virtualAccountId,
+            },
+            select: {
+              id: true,
+              walletId: true,
+              providerCode: true,
+              accountNumber: true,
+            },
+          })
+        : await tx.virtualAccount.findFirst({
+            where: {
+              providerCode: notification.providerCode,
+              accountNumber: notification.accountNumber,
+              status: "ACTIVE",
+            },
+            select: {
+              id: true,
+              walletId: true,
+              providerCode: true,
+              accountNumber: true,
+            },
+          });
+      
+      if (!virtualAccount) {
         throw new WalletFundingError(
-          "Payment identifiers conflict with an existing funding record.",
-          "PAYMENT_REFERENCE_CONFLICT",
+          "No matching virtual account exists for this payment.",
+          "VIRTUAL_ACCOUNT_NOT_FOUND",
         );
       }
-
-      if (existingFunding.status === "CONFIRMED") {
-        return {
-          status: "DUPLICATE",
-          duplicate: true,
-          fundingId: existingFunding.id,
-        };
-      }
-
-      if (
-        existingFunding.expectedAmountKobo !== null &&
-        existingFunding.expectedAmountKobo !==
-          notification.amountKobo
-      ) {
-        const reviewedFunding = await tx.walletFunding.update({
-          where: {
-            id: existingFunding.id,
-          },
-          data: {
-            receivedAmountKobo: notification.amountKobo,
+      
+      if (existingFunding) {
+        if (
+          existingFunding.providerCode !== notification.providerCode ||
+          existingFunding.providerReference !==
+            notification.providerReference ||
+          virtualAccount.providerCode !== notification.providerCode ||
+          virtualAccount.accountNumber !== notification.accountNumber
+        ) {
+          throw new WalletFundingError(
+            "Payment identifiers conflict with an existing funding record.",
+            "PAYMENT_REFERENCE_CONFLICT",
+          );
+        }
+      
+        if (existingFunding.status === "CONFIRMED") {
+          return {
+            status: "DUPLICATE",
+            duplicate: true,
+            fundingId: existingFunding.id,
+          };
+        }
+      
+        if (existingFunding.status === "REVIEW_REQUIRED") {
+          return {
             status: "REVIEW_REQUIRED",
-          },
-        });
-
-        return {
-          status: "REVIEW_REQUIRED",
-          duplicate: false,
-          fundingId: reviewedFunding.id,
-          reason: "RECEIVED_AMOUNT_DOES_NOT_MATCH_EXPECTED_AMOUNT",
-        };
+            duplicate: false,
+            fundingId: existingFunding.id,
+            reason: "FUNDING_REQUIRES_RECONCILIATION",
+          };
+        }
+      
+        if (existingFunding.status === "FAILED") {
+          if (notification.status === "FAILED") {
+            return {
+              status: "FAILED",
+              duplicate: false,
+              fundingId: existingFunding.id,
+            };
+          }
+      
+          const reviewedFunding = await tx.walletFunding.update({
+            where: {
+              id: existingFunding.id,
+            },
+            data: {
+              receivedAmountKobo: notification.amountKobo,
+              status: "REVIEW_REQUIRED",
+            },
+          });
+      
+          return {
+            status: "REVIEW_REQUIRED",
+            duplicate: false,
+            fundingId: reviewedFunding.id,
+            reason: "FAILED_PAYMENT_REQUIRES_RECONCILIATION",
+          };
+        }
+      
+        if (
+          existingFunding.expectedAmountKobo !== null &&
+          existingFunding.expectedAmountKobo !== notification.amountKobo
+        ) {
+          const reviewedFunding = await tx.walletFunding.update({
+            where: {
+              id: existingFunding.id,
+            },
+            data: {
+              receivedAmountKobo: notification.amountKobo,
+              status: "REVIEW_REQUIRED",
+            },
+          });
+      
+          return {
+            status: "REVIEW_REQUIRED",
+            duplicate: false,
+            fundingId: reviewedFunding.id,
+            reason: "RECEIVED_AMOUNT_DOES_NOT_MATCH_EXPECTED_AMOUNT",
+          };
+        }
+      
+        if (notification.status === "FAILED") {
+          const failedFunding = await tx.walletFunding.update({
+            where: {
+              id: existingFunding.id,
+            },
+            data: {
+              providerTransactionId: notification.providerTransactionId,
+              receivedAmountKobo: notification.amountKobo,
+              status: "FAILED",
+            },
+          });
+      
+          return {
+            status: "FAILED",
+            duplicate: false,
+            fundingId: failedFunding.id,
+          };
+        }
       }
-
       if (notification.status === "FAILED") {
-        const failedFunding = await tx.walletFunding.update({
-          where: {
-            id: existingFunding.id,
-          },
+        const failedFunding = await tx.walletFunding.create({
           data: {
+            walletId: virtualAccount.walletId,
+            virtualAccountId: virtualAccount.id,
+            providerCode: notification.providerCode,
+            providerReference: notification.providerReference,
             providerTransactionId:
               notification.providerTransactionId,
             receivedAmountKobo: notification.amountKobo,
+            currency: notification.currency,
             status: "FAILED",
           },
         });
-
+  
         return {
           status: "FAILED",
           duplicate: false,
           fundingId: failedFunding.id,
         };
       }
-    }
-
-    if (notification.status === "FAILED") {
-      const failedFunding = await tx.walletFunding.create({
-        data: {
-          walletId: virtualAccount.walletId,
-          virtualAccountId: virtualAccount.id,
-          providerCode: notification.providerCode,
-          providerReference: notification.providerReference,
-          providerTransactionId:
-            notification.providerTransactionId,
-          receivedAmountKobo: notification.amountKobo,
-          currency: notification.currency,
-          status: "FAILED",
-        },
-      });
-
-      return {
-        status: "FAILED",
-        duplicate: false,
-        fundingId: failedFunding.id,
-      };
-    }
 
     const funding = existingFunding
       ? await tx.walletFunding.update({
@@ -303,12 +355,16 @@ export async function processVerifiedPaymentNotification(
         });
 
     // Serialize wallet balance updates to prevent lost updates.
-    const walletLockKey = `wallet-balance:${virtualAccount.walletId}`;
+    const walletLockKey =
+      `wallet-balance:${virtualAccount.walletId}`;
 
     await tx.$queryRaw`
-      SELECT pg_advisory_xact_lock(
-        hashtext(${walletLockKey})::bigint
+      WITH acquired_lock AS (
+        SELECT pg_advisory_xact_lock(
+          hashtext(${walletLockKey})::bigint
+        )
       )
+      SELECT 1::integer AS locked
     `;
 
     const wallet = await tx.wallet.findUnique({
@@ -351,18 +407,19 @@ export async function processVerifiedPaymentNotification(
       },
     });
 
-    const walletTransaction = await tx.walletTransaction.create({
-      data: {
-        walletId: wallet.id,
-        fundingId: funding.id,
-        reference: `WALLET-FUND-${randomUUID()}`,
-        type: "CREDIT",
-        amountKobo: notification.amountKobo,
-        balanceBeforeKobo,
-        balanceAfterKobo,
-        description: "Wallet funding",
-      },
-    });
+    const walletTransaction =
+      await tx.walletTransaction.create({
+        data: {
+          walletId: wallet.id,
+          fundingId: funding.id,
+          reference: `WALLET-FUND-${randomUUID()}`,
+          type: "CREDIT",
+          amountKobo: notification.amountKobo,
+          balanceBeforeKobo,
+          balanceAfterKobo,
+          description: "Wallet funding",
+        },
+      });
 
     return {
       status: "CONFIRMED",

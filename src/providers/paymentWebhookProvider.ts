@@ -15,8 +15,20 @@ export interface PaymentWebhookRequest {
     status: "SUCCESS" | "FAILED";
   }
   
+  export class PaymentWebhookError extends Error {
+    constructor(
+      message: string,
+      public readonly statusCode: 400 | 401 | 503,
+      public readonly code: string,
+    ) {
+      super(message);
+      this.name = "PaymentWebhookError";
+    }
+  }
+  
   export interface PaymentWebhookProvider {
     readonly providerCode: string;
+    readonly signatureHeaderName: string;
   
     verifyAndParseNotification(
       request: PaymentWebhookRequest,

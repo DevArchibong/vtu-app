@@ -17,10 +17,18 @@ import { dataCatalogueRouter } from "./routes/dataCatalogue.js";
 import { walletRouter } from "./routes/wallet.js";
 import { createIdentityVerificationRouter } from "./routes/identityVerification.js";
 import { createVirtualAccountRouter } from "./routes/virtualAccount.js";
+import { createPaymentWebhookRouter } from "./routes/paymentWebhook.js";
 
 
 export const app = express();
 
+// Payment webhooks must receive the original raw request body.
+app.use(
+  "/api/webhooks/payments",
+  createPaymentWebhookRouter(null),
+);
+
+// Parse JSON for the remaining API routes.
 app.use(express.json());
 
 // Rate limits apply only to these sensitive endpoints.
@@ -46,7 +54,8 @@ app.use("/api/auth/phone-verification", phoneVerificationRouter);
 app.use("/api", profileRouter);
 app.use("/api", dataCatalogueRouter);
 app.use("/api", walletRouter);
-app.use("/api/identity", createIdentityVerificationRouter);
+app.use("/api/identity", createIdentityVerificationRouter(null)
+);
 app.use(
   "/api/wallet/virtual-account",
   createVirtualAccountRouter(null),
